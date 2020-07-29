@@ -1,7 +1,22 @@
 # pytorch-deepFEPE
-Deep Keypoint-Based Camera Pose Estimation with Geometric Constraints.
+This repo is the official implementation of the paper:
+
+**Deep Keypoint-Based Camera Pose Estimation with Geometric Constraints**.
+
+[You-Yi Jau*](http://eric-yyjau.github.io/), Rui Zhu*, Hao Su, Manmohan Chandraker
+
+**IROS 2020**
+
+See our [paper]() and [Video](https://www.youtube.com/watch?v=2q-_-MO4GBI&list=PLYCp1NXEzCqgIkyQkzixon3VtQtcYcFPv) for more details.
+
 
 ## Installation
+### Clone repo and submodules
+```shell
+git clone https://github.com/eric-yyjau/pytorch-deepFEPE.git
+git pull --recurse-submodules
+```
+
 ### Requirements
 - python == 3.6
 - pytorch >= 1.1 (tested in 1.3.1)
@@ -9,21 +24,14 @@ Deep Keypoint-Based Camera Pose Estimation with Geometric Constraints.
 - cuda (tested in cuda10)
 ```
 conda create --name py36-deepfepe python=3.6
-conda activate py36-sp
+conda activate py36-deepfepe
 pip install -r requirements.txt
 pip install -r requirements_torch.txt # install pytorch
 ```
 ### Pull and link Superpoint model
-```
-cd pytorch_superpoint
-git pull
-cd ../
-cd utils/
-ln -s ../pytorch_superpoint/utils/*.py .
-```
 - install superpoint module
 ```
-git clone git@github.com:eric-yyjau/pytorch-superpoint.git
+git clone https://github.com/eric-yyjau/pytorch-superpoint.git
 cd pytorch-superpoint
 git checkout module_20200707
 # install
@@ -37,7 +45,6 @@ pip install -e .
   export LANG=en_US.UTF-8
   export LANGUAGE=en_US.UTF-8
   ```
-- install DeepF module
 
 
 ## Dataset
@@ -119,7 +126,15 @@ python deepFEPE/train_good.py eval_good deepFEPE/configs/apollo_train_corr_basel
 ```
 
 You can use our pretrained models for testing. Just put the paths in the `config` file.
-- Our **pretrained models**:
+
+### Our **pretrained models**:
+- Download through `git-lfs` or [Google drive](https://drive.google.com/drive/folders/18WHK8V7orm7-Pqd4KouPSM-da2CD8xN4?usp=sharing)
+```
+git lfs ls-files # check the files
+git lfs fetch 
+git lfs pull # get the files
+git pull
+```
 (Refer to the config.yml and checkpoints/ in the folder)
   - KITTI models (trained on KITTI):
     - git lfs file: `deepFEPE/logs/kitti_models.zip`
@@ -180,7 +195,7 @@ python run_eval_good.py -dataset kitti --model_base kitti --exper_path logs --ru
 - open jupyter notebook
 - read the sequences from the config file: `table_trans_rot_kitti_apollo.yaml`
 ```yaml
-base_path: '/home/yoyee/Documents/deepSfm/logs/' # set the path for checkpoints
+base_path: '/home/yoyee/Documents/deepSfm/logs/' # set the base path for checkpoints
 seq_dict_test:
     Si-D.k: ['eval_kitti', 'DeepF_err_ratio.npz', '07/29/2020']
 ```
@@ -210,6 +225,8 @@ ln -s 1114/* . # do the same for the other folders
 ```
 - Then, you can follow the instructions in `Read out the results`.
 
+- Trajectory results are in `deepFEPE/logs/results/trajectory.zip`.
+
 ### Evaluate visual odometry
 ```
 jupyter notebook
@@ -223,8 +240,6 @@ jupyter notebook
 ```
 tensorboard --logdir=runs/train_good
 ```
-
-## Pretrained models
 
 ## Jupyter notebook
 - visualization
