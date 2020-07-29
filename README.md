@@ -240,8 +240,6 @@ jupyter notebook
 ```
 tensorboard --logdir=runs/train_good
 ```
-
-## Jupyter notebook
 - visualization
   - Ex: Train SIFT + DeepF
     - check loss: gt should always be 1
