@@ -1,0 +1,191 @@
+name: 'apollo_odo_good_corr'
+
+data:
+    # dataset: 'kitti_corr'
+    dataset: 'kitti_odo_corr'
+    # dump_root: '/data/yyjau/apolloscape/apolloscape_dump/sample_1' # apollo dataset
+    # dump_root: '/newfoundland/yyjau/apollo/apollo_dump/train_seq_1' # apollo dataset
+    # dump_root: '/newfoundland/yyjau/apollo/apollo_dump/train_seq_2' # apollo large dataset
+    # dump_root: './datasets/apollo/apollo_dump/sample_3' # apollo large dataset
+    dump_root: './deepFEPE/datasets/apollo/apollo_dump/train_seq_1' # apollo large dataset
+    
+    cache_in_memory: true
+    sequence_length: 2
+    delta_ij: 1
+    batch_size: 12 # 4 for apollo, 16 for sift, reduce due to GPU memory issue # 64
+    good_num: 1000
+    # min_good_num: 100 ## check min correspondences
+    read_what:
+        with_X: false
+        with_pose: true
+        with_sift: true
+        with_sift_des: false
+        with_SP: false
+        with_quality: true
+        with_qt: true
+        with_imgs: false ### no effect on dataloader
+    image:
+        # size: [2056, 2452, 3] # The size when you DUMP the image and SIFTs (sets the limit for the saved image and SIFT)
+        size: [2710, 3384, 3] # The size when you DUMP the image and SIFTs (sets the limit for the saved image and SIFT)
+        # size: [200, 240, 3] # The size of small apollo
+    preprocessing:  # also process the sift points
+        # resize: [128, 416]
+        # resize: [192, 624]
+        resize: [600, 800] # you can change as you want. The points and calibration matrix will be adjusted.
+        # resize: [400, 640] # batch=8, you can change as you want. The points and calibration matrix will be adjusted.
+
+    read_params:
+        use_h5: false # set to false to use .npy
+
+model:
+    # name: 'GoodCorresNet'
+    # name: 'GoodCorresNet_layers'
+    name: 'GoodCorresNet_layers_deepF'
+    # name: 'GoodCorresNet_layers_deepF_SP'
+    # name: 'GoodCorresNet_layers_deepF_directQt'
+    depth: 5
+    clamp_at: 0.02 # 0.02 
+    if_quality: false # True
+    if_goodCorresArch: False
+    if_lidar_corres: false
+    if_img_feat: false
+    if_img_des_to_pointnet: false
+    quality_size: 0 #### check!! 2
+    if_cpu_svd: true
+    if_learn_offsets: false
+    if_tri_depth: false
+    if_qt_loss: true # false # true # train experiment
+    if_sample_loss: false
+    if_SP: true # false
+    # balance
+    balance_q: 1 # 1
+    balance_t: 0.1 # ['baselineTrain_apolloSp_apolloDeepF_apolloPoseLoss_v0', 0.01]
+    # balance_F: 1
+
+
+exps:
+    # five_point: True
+    # base_name: 'opencv_5p'
+    five_point: False
+    base_name: 'opencv_8p'
+    our_name: 'DeepF'
+    filename: 'err_ratio.npz'
+
+training:
+    reproduce: false # False  # set true to freeze random seed
+    # eval_batch_size: 50
+    learning_rate: 0.0001 # 0.0001
+    lr_decay_step: 10
+    lr_decay_rate: 1 # 0.9
+    # gradient_clip: 0.1
+    skip_optimizer:  # skip optimization if loss is lower than epi_min
+        enable: False
+        params: {
+            epi_min: 0.001
+        }
+    clamp_iter1: 1500 # rui: 1600, yy: 3000
+    clamp_iter2: 3000 # rui: 3800, yy: 6000
+    clamp_q_params: [0.1, 0.01, 0.001] # clamp the loss. important!
+    clamp_t_params: [0.5, 0.3, 0.1]
+
+    # learning_rate: 0.0
+    # epoch-size: 0
+    # epochs: 1
+    seed: 0
+    workers_train: 2 # 16
+    workers_val: 2 # 2
+    train_iter: 100000
+    # eval_iter: 200
+    val_interval: 200 # one validation of entire val set every N **training** steps
+    val_interval_in_train: 400
+    val_batches: 4 # set to -1 to disable validation limit
+    # train_show_interval: 200 # one show of the current training from to Tensorboard every N training steps
+    val_show_interval: 100 # one show of the current training from to Tensorboard every N training steps
+    save_interval: 200 # 200
+
+    # retrain: true # set true for new model
+    # reset_iter: true
+    # pretrained: ''
+
+    retrain: true # set true for new model
+    reset_iter: true ######## true
+    train: true # false if freeze the weights
+    # pretrained: ''
+    # pretrained: 'logs/baselineTrain_deepF_kitti_fLoss_v1/checkpoints/deepFNet_30000_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_sp_deepF_kitti_qtLoss_v0/checkpoints/deepFNet_20000_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v1/checkpoints/deepFNet_3200_checkpoint.pth.tar'
+    
+    ## new apollo
+    ### from F loss pretrained
+    # pretrained: 'logs/baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0/checkpoints/deepFNet_20600_checkpoint.pth.tar'
+    ### F loss
+    # pretrained: 'logs/baselineTrain_apolloSp_deepF_fLoss_apolloseq2_end_v0/checkpoints/deepFNet_8000_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1/checkpoints/deepFNet_8200_checkpoint.pth.tar'
+
+    ### pose loss
+    # pretrained: 'logs/baselineTrain_sift_deepF_poseLoss_apolloseq2_v0/checkpoints/deepFNet_21000_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_apolloSp_deepF_fLossPoseLoss_apolloseq2_end_v0/checkpoints/deepFNet_2200_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_end_v1/checkpoints/deepFNet_2600_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_v0/checkpoints/deepFNet_12600_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_end_v0/checkpoints/deepFNet_4600_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_v1/checkpoints/deepFNet_7800_checkpoint.pth.tar'
+    pretrained: 'logs/baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_poseLoss/checkpoints/deepFNet_11600_checkpoint.pth.tar'
+    
+
+    ## apollo    
+    # pretrained: 'logs/baselineTrain_deepF_apolloFLoss_v3/checkpoints/deepFNet_60000_checkpoint.pth.tar'
+    ### from F loss pretrained
+    # pretrained: 'logs/baselineTrain_apolloSp_deepF_apolloFLoss_v0/checkpoints/deepFNet_24000_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_cocoSp_deepF_apolloFLoss_v1/checkpoints/deepFNet_7200_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_cocoSp_deepF_apolloFLoss_end_v0/checkpoints/deepFNet_15000_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_cocoSp_deepF_apolloFLoss_v1/checkpoints/deepFNet_19800_checkpoint.pth.tar'
+    ### pose loss
+    # pretrained: 'logs/baselineTrain_apolloSp_apolloDeepF_end_apolloFLossPoseLoss_v1/checkpoints/deepFNet_3200_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_apolloSp_deepF_apolloPoseLoss_v0/checkpoints/deepFNet_19600_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_apolloSp_deepF_end_apolloPoseLoss_v2/checkpoints/deepFNet_4600_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_apolloSp_apolloDeepF_end_apolloFLossPoseLoss_v1_freezeSp_poseLoss/checkpoints/deepFNet_18000_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_cocoSp_deepF_apolloFLossPoseLoss_end_v0/checkpoints/deepFNet_11200_checkpoint.pth.tar'
+
+
+    retrain_SP: false # set true for new model
+    train_SP: false # false if freeze the weights
+    reset_iter_SP: false
+    # pretrained_SP: ''
+    pretrained_SP: 'logs/superpoint_apollo_v1/checkpoints/superPointNet_40000_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/superpoint_apollo_v2/checkpoints/superPointNet_50000_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/superpoint_coco_heat2_0/checkpoints/superPointNet_170000_checkpoint.pth.tar'
+    
+    # F loss
+    # pretrained_SP: 'logs/baselineTrain_cocoSp_deepF_apolloFLoss_end_v0/checkpoints/superPointNet_15000_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_cocoSp_deepF_apolloFLoss_v1/checkpoints/superPointNet_19800_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_apolloSp_deepF_fLoss_apolloseq2_end_v0/checkpoints/superPointNet_8000_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1/checkpoints/superPointNet_8200_checkpoint.pth.tar'
+    ## pose loss
+    # pretrained_SP: 'logs/baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_v0/checkpoints/superPointNet_12600_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_v1/checkpoints/superPointNet_7800_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_end_v0/checkpoints/superPointNet_4600_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_end_v1/checkpoints/superPointNet_2600_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_poseLoss/checkpoints/superPointNet_11600_checkpoint.pth.tar'
+
+
+    ### pose loss
+    # pretrained_SP: 'logs/baselineTrain_apolloSp_deepF_end_apolloPoseLoss_v2/checkpoints/superPointNet_4600_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_apolloSp_apolloDeepF_end_apolloFLossPoseLoss_v1/checkpoints/superPointNet_3200_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_apolloSp_apolloDeepF_end_apolloFLossPoseLoss_v1_freezeSp_poseLoss/checkpoints/superPointNet_18000_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_cocoSp_deepF_apolloFLossPoseLoss_end_v0/checkpoints/superPointNet_11200_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_apolloSp_deepF_fLossPoseLoss_apolloseq2_end_v0/checkpoints/superPointNet_2200_checkpoint.pth.tar'
+    
+    
+
+    SP_params:
+        nn_thresh: 1.0  # 0.8
+        out_num_points: 1000
+        patch_size: 5
+        nms_dist: 4
+        conf_thresh: 0.015
+    # pretrained_SP: 'logs/baselineTrain_sp_deepF_kitti_qtLoss_v0/checkpoints/superPointNet_20000_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/test_baselineTrain/checkpoints/superPointNet_5_checkpoint.pth.tar'
+
+
+seed: 0
+#keep_checkpoints: 20

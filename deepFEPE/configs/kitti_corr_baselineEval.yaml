@@ -1,0 +1,135 @@
+name: 'kitti_odo_good_corr'
+
+desc: 'Eval on kitti'
+
+data:
+    dataset: 'kitti_odo_corr'
+    dump_root: './deepFEPE/datasets/kitti_dump/odo_corr_dump_siftIdx_npy_delta1235810_full_1027' # on adrian (0708)
+
+    cache_in_memory: true
+    sequence_length: 2
+    delta_ij: 1
+    batch_size: 4 # 4 (sp), 64 (if_SP=false)
+    good_num: 1000
+    read_what:
+        with_X: false
+        with_pose: true
+        with_sift: true
+        with_sift_des: false
+        with_SP: false
+        with_quality: true # overrided by if_quality
+        with_qt: true
+        with_imgs: false
+        with_imgs_gamma: 1 # [0.3, 1]
+    image:
+        size: [376, 1241, 3] # The size when you DUMP the image and SIFTs (sets the limit for the saved image and SIFT)
+    preprocessing:
+        resize: [376, 1240] # slight different. Check if calibration matrix is fixed as well.
+        # resize: [376, 1241] # Origional for the dumped dataset
+    read_params:
+        use_h5: false # set to false to use .npy
+
+model:
+    name: 'GoodCorresNet_layers_deepF'
+    depth: 5
+    clamp_at: 0.02
+    if_quality: false # True, add point confidence and ratio as inputs
+    if_goodCorresArch: False
+    if_lidar_corres: false
+    if_img_feat: false
+    if_img_des_to_pointnet: false
+    quality_size: 2
+    if_cpu_svd: true
+    if_learn_offsets: false
+    if_tri_depth: false
+    if_qt_loss: false
+    if_sample_loss: false
+    if_SP: True # check if you are using superpoint
+
+exps:
+    five_point: False
+    base_name: 'opencv_8p'
+    our_name: 'DeepF'
+    filename: 'err_ratio.npz'
+
+training:
+    learning_rate: 0.0001
+    lr_decay_step: 10
+    lr_decay_rate: 0.9
+    skip_optimizer:  # skip optimization if loss is lower than epi_min
+        enable: False
+    seed: 0
+    workers_train: 16 # 16
+    workers_val: 8 # 2
+    train_iter: 0
+    val_interval: 1 # one validation of entire val set every N **training** steps
+    val_interval_in_train: 1000
+    val_batches: -1 # set to -1 to disable validation limit
+    val_show_interval: 1 # one show of the current training from to Tensorboard every N training steps
+    save_interval: 10
+
+    retrain: false # don't set true for new model
+    train: false
+    reset_iter: true
+    ### trained results
+    pretrained: 'logs/test_kitti/checkpoints/deepFNet_100000_checkpoint.pth.tar'
+
+    ### baseline - sift
+    # pretrained: 'logs/baselineTrain_deepF_kitti_fLoss_v1/checkpoints/deepFNet_30000_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_sift_deepF_kittiPoseLoss_v1/checkpoints/deepFNet_36000_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_sift_deepF_poseLoss_v0/checkpoints/deepFNet_40000_checkpoint.pth.tar'
+    ### only train deepF using sp
+    # pretrained: 'logs/baselineTrain_kittiSp_deepF_kittiFLoss_v0/checkpoints/deepFNet_18000_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_kittiSp_deepF_kittiPoseLoss_v1/checkpoints/deepFNet_16000_checkpoint.pth.tar'
+    ### end-to-end
+    # pretrained: 'logs/baselineTrain_kittiSp_deepF_end_kittiFLoss_v0/checkpoints/deepFNet_10000_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_kittiSp10k_deepF_end_kittiFLoss_v1/checkpoints/deepFNet_8000_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_kittiSp_deepF_end_kittiFLoss_freezeSp_v1/checkpoints/deepFNet_45000_checkpoint.pth.tar'
+    ### pose loss
+    # pretrained: 'logs/baselineTrain_sp_deepF_kitti_qtLoss_v3/checkpoints/deepFNet_8000_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_kittiSp_kittiDeepF_end_kittiPoseLoss_v0/checkpoints/deepFNet_8000_checkpoint.pth.tar'
+   
+   ## apollo
+    # pretrained: 'logs/baselineTrain_deepF_apolloFLoss_v3/checkpoints/deepFNet_60000_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_apolloSp_apolloDeepF_apolloPoseLoss_v0/checkpoints/deepFNet_9000_checkpoint.pth.tar'
+    ## tum
+    # pretrained: 'logs/baselineTrain_deepF_tum_fLoss_v1/checkpoints/deepFNet_160000_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_tumSp_tumDeepF_tumQtLoss_v2/checkpoints/deepFNet_3600_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_tumSp_tumDeepF_tumQtLoss_v3/checkpoints/deepFNet_34000_checkpoint.pth.tar'
+
+    retrain_SP: false # set true for new model
+    train_SP: false
+    reset_iter_SP: false
+    pretrained_SP: ''
+    ## kitti
+    # pretrained_SP: 'logs/superpoint_kitti_heat2_0/checkpoints/superPointNet_50000_checkpoint.pth.tar'
+    ### end-to-end
+    ### f loss
+    # pretrained_SP: 'logs/baselineTrain_kittiSp_deepF_end_kittiFLoss_freezeSp_v1/checkpoints/superPointNet_45000_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_kittiSp10k_deepF_end_kittiFLoss_v1/checkpoints/superPointNet_8000_checkpoint.pth.tar'
+    ### pose loss
+    # pretrained_SP: 'logs/baselineTrain_sp_deepF_kitti_qtLoss_v3/checkpoints/superPointNet_8000_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_kittiSp_kittiDeepF_end_kittiPoseLoss_v0/checkpoints/superPointNet_8000_checkpoint.pth.tar'
+    
+    
+    ## apollo
+    # pretrained_SP: 'logs/superpoint_apollo_v1/checkpoints/superPointNet_40000_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_apolloSp_apolloDeepF_apolloPoseLoss_v0/checkpoints/superPointNet_9000_checkpoint.pth.tar'    
+    
+    ## tum
+    # pretrained_SP: 'logs/superpoint_tum_v0/checkpoints/superPointNet_40000_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_tumSp_tumDeepF_tumQtLoss_v2/checkpoints/superPointNet_3600_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_tumSp_tumDeepF_tumQtLoss_v3/checkpoints/superPointNet_34000_checkpoint.pth.tar'
+
+    SP_params:
+        # nn_thresh: 0.7  # 0.7 in the training KITTI, keep it
+        nn_thresh: 1.0  # 0.9 in the training APOLLO models, keep it
+        out_num_points: 1000
+        patch_size: 5
+        nms_dist: 4
+        conf_thresh: 0.015
+
+    reproduce: true # set true to enforce reproducibility
+
+seed: 0
+#keep_checkpoints: 20

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yyjau-tb
+  labels:
+    k8s-app: tensorboard
+    user: yyjau
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: tensorboard
+  template:
+    metadata:
+      labels:
+        k8s-app: tensorboard
+    spec:
+      containers:
+      - name: tensorboard
+        command: ["/bin/sh", "-c"]
+        args: ["tensorboard --logdir /cephfs/yyjau/Documents/deepSfm/runs/train_good"]  # specify the directory to watch
+        image: tensorflow/tensorflow
+        ports:
+        - containerPort: 6006
+        resources:
+          requests:
+            cpu: "1"
+            memory: "2Gi"
+          limits:
+            cpu: "1"
+            memory: "2Gi"
+        volumeMounts:
+          - name: cephfs-vol
+            mountPath: /cephfs
+      volumes:
+      - name: cephfs-vol
+        flexVolume:
+          driver: ceph.rook.io/rook
+          fsType: ceph
+          options:
+            fsName: nautilusfs
+            clusterNamespace: rook
+            path: /ucsd-haosulab
+            mountUser: ucsd-haosulab
+            mountSecret: ceph-fs-secret 
+      

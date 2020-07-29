@@ -1,0 +1,130 @@
+name: 'apollo_odo_good_corr'
+
+data:
+    # dataset: 'kitti_corr'
+    dataset: 'kitti_odo_corr'
+    # dump_root: '/newfoundland/yyjau/apollo/apollo_dump/train_seq_1' # apollo dataset
+    # dump_root: '/cephfs/yyjau/apollo/apollo_dump/train_seq_1' # apollo dataset
+    dump_root: './deepFEPE/datasets/apollo/apollo_dump/train_seq_1' # apollo large dataset
+
+    cache_in_memory: true
+    sequence_length: 2
+    delta_ij: 1
+    batch_size: 4 # 16 if no sp, 64
+    good_num: 1000
+    read_what:
+        with_X: false
+        with_pose: true
+        with_sift: true
+        with_sift_des: false
+        with_SP: false
+        with_quality: true # overrided by if_quality
+        with_qt: true
+        with_imgs: false
+    image:
+        size: [2710, 3384, 3] # The size when you DUMP the image and SIFTs (sets the limit for the saved image and SIFT)
+    preprocessing:
+        resize: [600, 800] # you can change as you want. The points and calibration matrix will be adjusted.
+
+    read_params:
+        use_h5: false # set to false to use .npy
+
+model:
+    # name: 'GoodCorresNet'
+    # name: 'GoodCorresNet_layers'
+    name: 'GoodCorresNet_layers_deepF'
+    # name: 'GoodCorresNet_layers_deepF_SP'
+    # name: 'GoodCorresNet_layers_deepF_directQt'
+    depth: 5
+    clamp_at: 0.02
+    if_quality: false # True, add point confidence and ratio as inputs
+    if_goodCorresArch: False
+    if_lidar_corres: false
+    if_img_feat: false
+    if_img_des_to_pointnet: false
+    quality_size: 2
+    if_cpu_svd: true
+    if_learn_offsets: false
+    if_tri_depth: false
+    if_qt_loss: false
+    if_sample_loss: false
+    if_SP: False # True
+
+exps:
+    # five_point: True
+    # base_name: 'opencv_5p'
+    five_point: False
+    base_name: 'opencv_8p'
+    our_name: 'DeepF'
+    filename: 'err_ratio.npz'
+
+training:
+    reproduce: true # set true to enforce reproducibility
+    # eval_batch_size: 50
+    learning_rate: 0.0001
+    lr_decay_step: 10
+    lr_decay_rate: 0.9
+    # learning_rate: 0.0
+    # epoch-size: 0
+    # epochs: 1
+    skip_optimizer:  # skip optimization if loss is lower than epi_min
+        enable: False
+
+    seed: 0
+    workers_train: 1 # 16
+    workers_val: 4 # 2
+    train_iter: 0
+    # eval_iter: 200
+    val_interval: 1 # one validation of entire val set every N **training** steps
+    val_interval_in_train: 1000
+    val_batches: -1 # set to -1 to disable validation limit
+    # train_show_interval: 200 # one show of the current training from to Tensorboard every N training steps
+    val_show_interval: 1 # one show of the current training from to Tensorboard every N training steps
+    save_interval: 10
+
+    retrain: false # set true for new model
+    reset_iter: true
+    train: false
+    ### trained results
+    pretrained: 'logs/test_kitti/checkpoints/deepFNet_100000_checkpoint.pth.tar'
+
+    ## kitti
+    # pretrained: 'logs/baselineTrain_deepF_kitti_fLoss_v1/checkpoints/deepFNet_30000_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_sp_deepF_kitti_qtLoss_v3/checkpoints/deepFNet_8000_checkpoint.pth.tar'
+    ## apollo
+    # pretrained: 'logs/baselineTrain_deepF_apolloFLoss_v3/checkpoints/deepFNet_60000_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_apolloSp_apolloDeepF_apolloPoseLoss_v0/checkpoints/deepFNet_9000_checkpoint.pth.tar'
+
+    ## tum
+    # pretrained: 'logs/baselineTrain_deepF_tum_fLoss_v1/checkpoints/deepFNet_160000_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_tumSp_tumDeepF_tumQtLoss_v2/checkpoints/deepFNet_3600_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_tumSp_tumDeepF_tumQtLoss_v3/checkpoints/deepFNet_34000_checkpoint.pth.tar'
+
+
+    train_SP: false
+    retrain_SP: false # set true for new model
+    reset_iter_SP: false
+    # pretrained_SP: 'logs/superpoint_coco_heat2_0/checkpoints/superPointNet_170000_checkpoint.pth.tar'
+    ## kitti
+    # pretrained_SP: 'logs/superpoint_kitti_heat2_0/checkpoints/superPointNet_50000_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_sp_deepF_kitti_qtLoss_v3/checkpoints/superPointNet_8000_checkpoint.pth.tar'
+    ## apollo
+    # pretrained_SP: 'logs/superpoint_apollo_v1/checkpoints/superPointNet_40000_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_apolloSp_apolloDeepF_apolloPoseLoss_v0/checkpoints/superPointNet_9000_checkpoint.pth.tar'
+
+    ## tum
+    # pretrained_SP: 'logs/superpoint_tum_v0/checkpoints/superPointNet_40000_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_tumSp_tumDeepF_tumQtLoss_v2/checkpoints/superPointNet_3600_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_tumSp_tumDeepF_tumQtLoss_v3/checkpoints/superPointNet_34000_checkpoint.pth.tar'
+
+    SP_params:
+        # nn_thresh: 0.7  # 0.7 in the training for kitti, keep it
+        nn_thresh: 1.0  # 0.9 in the training for apollo, keep it
+        out_num_points: 2000
+        patch_size: 5
+        nms_dist: 4
+        conf_thresh: 0.015
+
+
+seed: 0
+#keep_checkpoints: 20

@@ -1,0 +1,668 @@
+name: 'table_trans_rot'
+
+data:
+    # base_path: '/home/yyjau/Documents/deepSfm/logs/' # for all
+    # base_path: '/home/yoyee/Documents/deepSfm/deepFEPE/logs/results/' # for all
+    # base_path: '/home/yoyee/Documents/deepSfm/deepFEPE/logs/' # for all
+    base_path: '/home/yoyee/Documents/deepSfm/logs/' # for all
+    seq_dict:
+        # symbols: ['folder', 'filename']
+        ## baselines
+        s.k: ['baselineEval_sift_kittideepF_kitti_testall_v0', 'opencv_8p_err_ratio.npz']
+        s.a: ['baselineEval_sift_kittideepF_notrain_apollo_testall_v0', 'opencv_8p_err_ratio.npz']
+        d-k.k: ['baselineEval_sift_kittideepF_kitti_testall_v0', 'DeepF_err_ratio.npz']
+        d-k.a: ['baselineEval_sift_kittideepF_notrain_apollo_testall_v0', 'DeepF_err_ratio.npz']
+        d-a.k: ['baselineEval_deepF_apolloFLoss_v3_60k_kitti_testall', 'DeepF_err_ratio.npz']
+        d-a.a: ['baselineEval_deepF_apolloFLoss_v3_60k_testall', 'DeepF_err_ratio.npz']
+        spd-k.k: ['baselineEval_kittiSp_kittideepF_notrain_kitti_testall_v0', 'DeepF_err_ratio.npz']
+        spd-k.a: ['baselineEval_kittiSp_kittideepF_notrain_apollo_testall_v0', 'DeepF_err_ratio.npz']
+        spd-e-k.k: ['baselineEval_kittiSp_kittideepF_kittiPoseLoss_v3_8k_kitti_testall', 'DeepF_err_ratio.npz']
+        spd-e-k.a: ['baselineEval_kittiSp_kittideepF_kittiPoseLoss_v3_8k_apollo_testall', 'DeepF_err_ratio.npz']
+        spd-a.k: ['baselineEval_apolloSp_apolloDeepF_notrain_kitti_testall', 'DeepF_err_ratio.npz']
+        spd-a.a: ['baselineEval_apolloSp_apolloDeepF_apolloNotrain_testall', 'DeepF_err_ratio.npz']
+        spd-e-a.k: ['baselineEval_apolloSp_apolloDeepF_apolloPoseLoss_v0_9k_kitti_testall', 'DeepF_err_ratio.npz']
+        spd-e-a.a: ['baselineEval_apolloSp_apolloDeepF_apolloPoseLoss_v0_9k_apollo_testall', 'DeepF_err_ratio.npz']
+
+
+
+    # seq_dict_crossDataset: # 11/7
+    #     # symbols: ['folder', 'filename']
+    #     ## baselines
+    #     s.k: ['baselineEval_sift_kittideepF_kitti_testall_v0', 'opencv_8p_err_ratio.npz']
+    #     s.a: ['baselineEval_sift_kittideepF_notrain_apollo_testall_v0', 'opencv_8p_err_ratio.npz']
+    #     # use f-loss one.
+    #     Si-D-k-f.k: ['baselineEval_sift_kittideepF_kitti_testall_v0', 'DeepF_err_ratio.npz']
+    #     Si-D-k-f.a: ['baselineEval_sift_kittideepF_notrain_apollo_testall_v0', 'DeepF_err_ratio.npz']
+    #     # use f-loss one.
+    #     Si-D-a-f.k: : ['baselineEval_deepF_apolloFLoss_v3_60k_kitti_testall', 'DeepF_err_ratio.npz']
+    #     Si-D-a-f.a: : ['baselineEval_sift_kittideepF_notrain_apollo_testall_v0', 'DeepF_err_ratio.npz']
+    #     # d-k.a: ['baselineEval_sift_kittideepF_notrain_apollo_testall_v0', 'DeepF_err_ratio.npz']
+    #     # d-a.k: ['baselineEval_deepF_apolloFLoss_v3_60k_kitti_testall', 'DeepF_err_ratio.npz']
+        
+    #     ## sp models - kitti
+    #     Sp-D-k-p.k: ['']
+    #     Sp-D-k-p.a: ['']
+
+    #     Sp-D-end-k-f-p.k: ['', 'DeepF_err_ratio.npz', '11/4']        
+    #     Sp-D-end-k-f-p.a: ['', 'DeepF_err_ratio.npz', '11/4']
+
+    #     ## sp models - apollo
+    #     Sp-D-a-p.k: ['']
+    #     Sp-D-a-p.a: ['']
+
+    #     Sp-D-end-a-f-p.k: ['', 'DeepF_err_ratio.npz', '11/4']        
+    #     Sp-D-end-a-f-p.a: ['', 'DeepF_err_ratio.npz', '11/4']                
+
+    #     # d-a.a: ['baselineEval_deepF_apolloFLoss_v3_60k_testall', 'DeepF_err_ratio.npz']
+    #     # spd-k.k: ['baselineEval_kittiSp_kittideepF_notrain_kitti_testall_v0', 'DeepF_err_ratio.npz']
+    #     # spd-k.a: ['baselineEval_kittiSp_kittideepF_notrain_apollo_testall_v0', 'DeepF_err_ratio.npz']
+    #     # spd-e-k.k: ['baselineEval_kittiSp_kittideepF_kittiPoseLoss_v3_8k_kitti_testall', 'DeepF_err_ratio.npz']
+    #     # spd-e-k.a: ['baselineEval_kittiSp_kittideepF_kittiPoseLoss_v3_8k_apollo_testall', 'DeepF_err_ratio.npz']
+    #     # spd-a.k: ['baselineEval_apolloSp_apolloDeepF_notrain_kitti_testall', 'DeepF_err_ratio.npz']
+    #     # spd-a.a: ['baselineEval_apolloSp_apolloDeepF_apolloNotrain_testall', 'DeepF_err_ratio.npz']
+    #     # spd-e-a.k: ['baselineEval_apolloSp_apolloDeepF_apolloPoseLoss_v0_9k_kitti_testall', 'DeepF_err_ratio.npz']
+    #     # spd-e-a.a: ['baselineEval_apolloSp_apolloDeepF_apolloPoseLoss_v0_9k_apollo_testall', 'DeepF_err_ratio.npz']
+
+    seq_dict_test:
+        Si-D.k: ['eval_kitti', 'DeepF_err_ratio.npz', '07/29/2020']
+        Si-D.a: ['eval_apo', 'DeepF_err_ratio.npz', '07/29/2020']
+
+        # Si.k: ['baselineTrain_deepF_kitti_fLoss_v1_30.0k_kittiTestall_test_0708', 'opencv_8p_err_ratio.npz', '07/10/2020']
+        # Si-D.k: ['baselineTrain_deepF_kitti_fLoss_v1_30.0k_kittiTestall_test_0708', 'DeepF_err_ratio.npz', '07/10/2020']
+        
+        # Sp-D-end-k-f-p.k: ['baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp_38.0k_kittiTestall_test_0708', 
+        #         'DeepF_err_ratio.npz', '07/10/2020']
+        # Sp-k.k: ['baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp_38.0k_kittiTestall_test_0708', 
+        #         'opencv_8p_err_ratio.npz', '07/10/2020']
+
+
+        # test1: ['baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp_38.0k_kittiTestall_new_200228',
+        # 'DeepF_err_ratio.npz', '07/10/2020']
+        # test2: ['baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp_38.0k_kittiTestall_test_0708_theia',
+        # 'DeepF_err_ratio.npz', '07/10/2020']
+        
+
+    seq_dict_ablation: # 11/2
+        # symbols: ['folder', 'filename']
+        ## baselines
+        Sp-k.k: ['baselineEval_kittiSp_deepF_kittiFLoss_v0_18k_kittiTestall', 'opencv_8p_err_ratio.npz']
+        Si-D-k-f.k: ['baselineEval_sift_kittideepF_kitti_testall_v0', 'DeepF_err_ratio.npz']
+        Si-D-k-p.k: ['baselineEval_sift_deepF_kittiPoseLoss_v1_36k_kittiTestall', 'DeepF_err_ratio.npz']
+        Si-D-k-f-p.k: ['baselineEval_sift_deepF_poseLoss_v0_40k_wFLoss_kittiTestall', 'DeepF_err_ratio.npz']
+        Sp-D-k-f.k: ['baselineEval_kittiSp_deepF_kittiFLoss_v0_18k_kittiTestall', 'DeepF_err_ratio.npz']
+        Sp-D-k-p.k: ['baselineEval_kittiSp_deepF_kittiPoseLoss_v1_16k_kittiTestall', 'DeepF_err_ratio.npz']
+        # Sp-D-end-k-f.k: ['baselineEval_kittiSp_deepF_end_kittiFLoss_v0_10k_kittiTestall', 'DeepF_err_ratio.npz']
+        Sp-D-end-k-f.k: ['baselineEval_kittiSp_deepF_end_kittiFLoss_freezeSp_v1_45k_kittiTestall', 'DeepF_err_ratio.npz', '11/4']
+        # Sp-D-end-k-f.k: ['baselineEval_kittiSp10k_deepF_end_kittiFLoss_v1_8k_kittiTestall', 'DeepF_err_ratio.npz', '11/4']
+        Sp-D-end-k-p.k: ['baselineEval_kittiSp_kittiDeepF_end_kittiPoseLoss_v0_8k_kittiTestall', 'DeepF_err_ratio.npz', '11/4']        
+        Sp-D-end-k-f-p.k: ['baselineEval_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp_38k_kittiTestall', 'DeepF_err_ratio.npz', '11/7']
+
+
+    seq_dict_gamma_kitti_kitti: # 11/14
+        Sp-D-end-k-f-p-gam1.5.k: [baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp_38.0k_kittiTestall_Gamma1.5_1114,
+            DeepF_err_ratio.npz, baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp,
+            38000, 38000, 1, baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp_38.0k_kittiTestall_Gamma1.5_1114]
+        # Sp-D-end-k-f-p.k: ['baselineEval_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp_38k_kittiTestall', 'DeepF_err_ratio.npz', '11/7']
+
+
+    seq_dict_ablation_kitti: # 11/8, tested 07/09/2020
+        ## updated as well
+        ### baselines
+        Si.k: [baselineTrain_deepF_kitti_fLoss_v1_30.0k_kittiTestall_1107, opencv_8p_err_ratio.npz]
+        Sp-k.k: [baselineTrain_kittiSp_deepF_kittiFLoss_v0_18.0k_kittiTestall_1107, opencv_8p_err_ratio.npz]
+        Si-D-k-f.k: [baselineTrain_deepF_kitti_fLoss_v1_30.0k_kittiTestall_1107, DeepF_err_ratio.npz,
+                    baselineTrain_deepF_kitti_fLoss_v1, 30000, 30000, 2, baselineTrain_deepF_kitti_fLoss_v1_30.0k_kittiTestall_1107]
+        Si-D-k-f-p.k: [baselineTrain_sift_deepF_poseLoss_v0_40.0k_kittiTestall_1107, DeepF_err_ratio.npz,
+                    baselineTrain_sift_deepF_poseLoss_v0, 40000, 40000, 2, baselineTrain_sift_deepF_poseLoss_v0_40.0k_kittiTestall_1107]
+        Si-D-k-p.k: [baselineTrain_sift_deepF_kittiPoseLoss_v1_36.0k_kittiTestall_1107, DeepF_err_ratio.npz,
+            baselineTrain_sift_deepF_kittiPoseLoss_v1, 36000, 36000, 2, baselineTrain_sift_deepF_kittiPoseLoss_v1_36.0k_kittiTestall_1107]
+
+        # our methods
+        Sp-D-k-f.k: [baselineTrain_kittiSp_deepF_kittiFLoss_v0_18.0k_kittiTestall_1107, DeepF_err_ratio.npz,
+            baselineTrain_kittiSp_deepF_kittiFLoss_v0, 18000, 18000, 1, baselineTrain_kittiSp_deepF_kittiFLoss_v0_18.0k_kittiTestall_1107]
+        Sp-D-k-p.k: [baselineTrain_kittiSp_deepF_kittiPoseLoss_v1_16.0k_kittiTestall_1107,
+            DeepF_err_ratio.npz, baselineTrain_kittiSp_deepF_kittiPoseLoss_v1, 16000, 16000,
+            1, baselineTrain_kittiSp_deepF_kittiPoseLoss_v1_16.0k_kittiTestall_1107]
+        ### our methods - end-to-end
+        Sp-D-end-k-f.k: [baselineTrain_kittiSp_deepF_end_kittiFLoss_freezeSp_v1_45.0k_kittiTestall_1107,
+            DeepF_err_ratio.npz, baselineTrain_kittiSp_deepF_end_kittiFLoss_freezeSp_v1, 45000,
+            45000, 1, baselineTrain_kittiSp_deepF_end_kittiFLoss_freezeSp_v1_45.0k_kittiTestall_1107]
+        Sp-D-end-k-p.k: [baselineTrain_kittiSp_kittiDeepF_end_kittiPoseLoss_v0_8.0k_kittiTestall_1107,
+            DeepF_err_ratio.npz, baselineTrain_kittiSp_kittiDeepF_end_kittiPoseLoss_v0, 8000,
+            8000, 1, baselineTrain_kittiSp_kittiDeepF_end_kittiPoseLoss_v0_8.0k_kittiTestall_1107]
+        ## updated with seq 09, 10
+        Sp-D-end-k-f-p.k: ['baselineEval_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp_38k_kittiTestall', 'DeepF_err_ratio.npz', '11/7']
+        # Sp-D-end-k-f-p: [baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp_38.0k_kittiTestall_1107,
+        #     DeepF_err_ratio.npz, baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp,
+        #     38000, 38000, 1, baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp_38.0k_kittiTestall_1107],
+
+        # Sp-D-end-k-f-p-1.k: [baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp_10.0k_kittiTestall_1109,
+        #     DeepF_err_ratio.npz, baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp,
+        #     10000, 10000, 1, baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp_10.0k_kittiTestall_1109]
+        # Sp-D-end-k-f-p-2.k: [baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp_15.0k_kittiTestall_1109,
+        #     DeepF_err_ratio.npz, baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp,
+        #     15000, 15000, 1, baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp_15.0k_kittiTestall_1109]
+        # Sp-D-end-k-f-p-3.k: [baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp_20.0k_kittiTestall_1109,
+        #     DeepF_err_ratio.npz, baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp,
+        #     20000, 20000, 1, baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp_20.0k_kittiTestall_1109]
+
+    seq_dict_ablation_kitti_apollo: # tested 07/09/2020
+        ### baselines
+        Si.a: [baselineTrain_deepF_kitti_fLoss_v1_30.0k_apolloTestall_1107, opencv_8p_err_ratio.npz]
+        Sp-k.a: [baselineTrain_kittiSp_deepF_kittiFLoss_v0_18.0k_apolloTestall_1107, opencv_8p_err_ratio.npz]
+        Si-D-k-f.a: [baselineTrain_deepF_kitti_fLoss_v1_30.0k_apolloTestall_1107, DeepF_err_ratio.npz,
+        baselineTrain_deepF_kitti_fLoss_v1, 30000, 30000, 2, baselineTrain_deepF_kitti_fLoss_v1_30.0k_apolloTestall_1107]
+        Si-D-k-f-p.a: [baselineTrain_sift_deepF_poseLoss_v0_40.0k_apolloTestall_1107, DeepF_err_ratio.npz,
+            baselineTrain_sift_deepF_poseLoss_v0, 40000, 40000, 2, baselineTrain_sift_deepF_poseLoss_v0_40.0k_apolloTestall_1107]
+        Si-D-k-p.a: [baselineTrain_sift_deepF_kittiPoseLoss_v1_36.0k_apolloTestall_1107, DeepF_err_ratio.npz,
+            baselineTrain_sift_deepF_kittiPoseLoss_v1, 36000, 36000, 2, baselineTrain_sift_deepF_kittiPoseLoss_v1_36.0k_apolloTestall_1107]
+
+        ### our methods
+        Sp-D-k-f.a: [baselineTrain_kittiSp_deepF_kittiFLoss_v0_18.0k_apolloTestall_1107, DeepF_err_ratio.npz,
+            baselineTrain_kittiSp_deepF_kittiFLoss_v0, 18000, 18000, 1, baselineTrain_kittiSp_deepF_kittiFLoss_v0_18.0k_apolloTestall_1107]
+        Sp-D-k-p.a: [baselineTrain_kittiSp_deepF_kittiPoseLoss_v1_16.0k_apolloTestall_1107,
+            DeepF_err_ratio.npz, baselineTrain_kittiSp_deepF_kittiPoseLoss_v1, 16000, 16000,
+            1, baselineTrain_kittiSp_deepF_kittiPoseLoss_v1_16.0k_apolloTestall_1107]
+
+        ### end-to-end
+        Sp-D-end-k-f.a: [baselineTrain_kittiSp_deepF_end_kittiFLoss_freezeSp_v1_45.0k_apolloTestall_1107,
+            DeepF_err_ratio.npz, baselineTrain_kittiSp_deepF_end_kittiFLoss_freezeSp_v1, 45000,
+            45000, 1, baselineTrain_kittiSp_deepF_end_kittiFLoss_freezeSp_v1_45.0k_apolloTestall_1107]
+        Sp-D-end-k-f-p.a: [baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp_38.0k_apolloTestall_1107,
+            DeepF_err_ratio.npz, baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp,
+            38000, 38000, 1, baselineTrain_kittiSp_deepF_end_kittiFLossPoseLoss_v1_freezeSp_38.0k_apolloTestall_1107]
+        Sp-D-end-k-p.a: [baselineTrain_kittiSp_kittiDeepF_end_kittiPoseLoss_v0_8.0k_apolloTestall_1107,
+            DeepF_err_ratio.npz, baselineTrain_kittiSp_kittiDeepF_end_kittiPoseLoss_v0, 8000,
+            8000, 1, baselineTrain_kittiSp_kittiDeepF_end_kittiPoseLoss_v0_8.0k_apolloTestall_1107]
+
+    seq_dict_ablation_apollo_new_kitti: # tested 07/09/2020
+        ## baseline
+        Si.k: [baselineTrain_deepF_kitti_fLoss_v1_30.0k_kittiTestall_1107, opencv_8p_err_ratio.npz]
+        # Si.k: ['baselineTrain_sift_deepF_fLoss_apolloseq2_v1_13.2k_kittiTestall_new_1119', 'opencv_8p_err_ratio.npz']
+        Sp-a.k: [baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_v1_7.8k_kittiTestall_new_1119, opencv_8p_err_ratio.npz]
+
+        ##
+        Si-D-a-f.k: [baselineTrain_sift_deepF_fLoss_apolloseq2_v1_13.2k_kittiTestall_new_1119,
+            DeepF_err_ratio.npz, baselineTrain_sift_deepF_fLoss_apolloseq2_v1, 13200, 13200,
+            2, baselineTrain_sift_deepF_fLoss_apolloseq2_v1_13.2k_kittiTestall_new_1119]
+        Si-D-a-p.k: [baselineTrain_sift_deepF_poseLoss_apolloseq2_v0_21.0k_kittiTestall_new_1119,
+            DeepF_err_ratio.npz, baselineTrain_sift_deepF_poseLoss_apolloseq2_v0, 21000, 21000,
+            2, baselineTrain_sift_deepF_poseLoss_apolloseq2_v0_21.0k_kittiTestall_new_1119]
+        
+        # Si-D-a-p-b4.k: [baselineTrain_sift_deepF_poseLoss_apolloseq2_v1_19.6k_kittiTestall_new_1119,
+        #     DeepF_err_ratio.npz, baselineTrain_sift_deepF_poseLoss_apolloseq2_v1, 19600, 19600,
+        #     2, baselineTrain_sift_deepF_poseLoss_apolloseq2_v1_19.6k_kittiTestall_new_1119]
+
+        ## sp
+        # Sp-D-a-f.k: [baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_20.6k_kittiTestall_new_1119,
+        #     DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0, 20600,
+        #     20600, 1, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_20.6k_kittiTestall_new_1119]
+        # Sp-D-a-p.k: [baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_v0_12.6k_kittiTestall_new_1119,
+        #     DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_v0, 12600,
+        #     12600, 1, baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_v0_12.6k_kittiTestall_new_1119]
+        
+        # ## end-to-end
+        # Sp-D-end-a-f-p.k: [baselineTrain_apolloSp_deepF_fLossPoseLoss_apolloseq2_end_v0_freezeSp_fLoss_8.0k_kittiTestall_new_1119,
+        #     DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_fLossPoseLoss_apolloseq2_end_v0_freezeSp_fLoss,
+        #     8000, 8000, 1, baselineTrain_apolloSp_deepF_fLossPoseLoss_apolloseq2_end_v0_freezeSp_fLoss_8.0k_kittiTestall_new_1119]
+        # Sp-D-end-a-f.k: [baselineTrain_apolloSp_deepF_fLoss_apolloseq2_end_v0_freezeSp_fLoss_6.0k_kittiTestall_new_1119,
+        #     DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_end_v0_freezeSp_fLoss,
+        #     6000, 6000, 1, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_end_v0_freezeSp_fLoss_6.0k_kittiTestall_new_1119]
+        # Sp-D-end-a-p.k: [baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_end_v0_4.6k_kittiTestall_new_1119,
+        #     DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_end_v0,
+        #     4600, 4600, 1, baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_end_v0_4.6k_kittiTestall_new_1119]        
+
+        ## larger batch size
+        Sp-D-a-p.k: [baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_v1_7.8k_kittiTestall_new_1119,
+            DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_v1, 7800,
+            7800, 1, baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_v1_7.8k_kittiTestall_new_1119,
+            'Sp-D-a-p-b16']
+
+        Sp-D-end-a-p.k: [baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_end_v1_2.6k_kittiTestall_new_1119,
+            DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_end_v1,
+            2600, 2600, 1, baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_end_v1_2.6k_kittiTestall_new_1119,
+            'Sp-D-end-a-p-b12']
+
+        Sp-D-a-f.k: [baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v1_12.4k_kittiTestall_new_1119,
+            DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v1, 12400,
+            12400, 1, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v1_12.4k_kittiTestall_new_1119,
+            'Sp-D-f-b12']
+        Sp-D-end-a-f.k: [baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_8.2k_kittiTestall_new_1119,
+            DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1,
+            8200, 8200, 1, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_8.2k_kittiTestall_new_1119,
+            'Sp-D-f-end-b8']
+
+        # Sp-D-end-a-f-p.k: [baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_poseLoss_11.6k_kittiTestall_new_1119,
+        #     DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_poseLoss,
+        #     11600, 11600, 1, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_poseLoss_11.6k_kittiTestall_new_1119,
+        #     'Sp-D-end-a-f-p-b8']
+
+        ## the best fp loss
+        Sp-D-end-a-f-p.k: [baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_poseLoss_freezeSp_fLoss_5.4k_kittiTestall_new_1119,
+            DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_poseLoss_freezeSp_fLoss,
+            5400, 5400, 1, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_poseLoss_freezeSp_fLoss_5.4k_kittiTestall_new_1119,
+            'Sp-D-end-a-f-p-b8-f']
+        # Sp-D-end-a-f-p-b8-p.k: [baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_poseLoss_freezeSp_poseLoss_3.8k_kittiTestall_new_1119,
+        #     DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_poseLoss_freezeSp_poseLoss,
+        #     3800, 3800, 1, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_poseLoss_freezeSp_poseLoss_3.8k_kittiTestall_new_1119]
+
+
+    seq_dict_ablation_apollo_new_apollo: ## models train on apollo new sets, # tested 07/09/2020
+        ## baselines
+        Si.a: [baselineTrain_deepF_kitti_fLoss_v1_30.0k_apolloTestall_1107, opencv_8p_err_ratio.npz]
+        # Si.a: ['baselineTrain_sift_deepF_fLoss_apolloseq2_v1_13.2k_apolloTestall_new_1119', 'opencv_8p_err_ratio.npz']
+        Sp-a.a: [baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_v1_7.8k_apolloTestall_new_1119,
+            opencv_8p_err_ratio.npz]
+
+        # Si-D-a-f-p.a: [baselineTrain_sift_deepF_apolloFLossPoseLoss_v0_35.0k_apolloTestall_1107,
+            # DeepF_err_ratio.npz, baselineTrain_sift_deepF_apolloFLossPoseLoss_v0, 35000, 35000,
+            # 2, baselineTrain_sift_deepF_apolloFLossPoseLoss_v0_35.0k_apolloTestall_1107]
+        Si-D-a-f.a: [baselineTrain_sift_deepF_fLoss_apolloseq2_v1_13.2k_apolloTestall_new_1119,
+            DeepF_err_ratio.npz, baselineTrain_sift_deepF_fLoss_apolloseq2_v1, 13200, 13200,
+            2, baselineTrain_sift_deepF_fLoss_apolloseq2_v1_13.2k_apolloTestall_new_1119]
+        Si-D-a-p.a: [baselineTrain_sift_deepF_poseLoss_apolloseq2_v0_21.0k_apolloTestall_new_1119,
+            DeepF_err_ratio.npz, baselineTrain_sift_deepF_poseLoss_apolloseq2_v0, 21000, 21000,
+            2, baselineTrain_sift_deepF_poseLoss_apolloseq2_v0_21.0k_apolloTestall_new_1119]
+
+        # Si-D-a-p-b4.a: [baselineTrain_sift_deepF_poseLoss_apolloseq2_v1_19.6k_apolloTestall_new_1119,
+        #     DeepF_err_ratio.npz, baselineTrain_sift_deepF_poseLoss_apolloseq2_v1, 19600, 19600,
+        #     2, baselineTrain_sift_deepF_poseLoss_apolloseq2_v1_19.6k_apolloTestall_new_1119]
+
+        ## sp models
+        # Sp-D-a-f.a: [baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_20.6k_apolloTestall_new_1119,
+        #     DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0, 20600,
+        #     20600, 1, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_20.6k_apolloTestall_new_1119]
+        # Sp-D-a-p.a: [baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_v0_12.6k_apolloTestall_new_1119,
+        #     DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_v0, 12600,
+        #     12600, 1, baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_v0_12.6k_apolloTestall_new_1119]
+        # ### end-to-end
+        # Sp-D-end-a-f.a: [baselineTrain_apolloSp_deepF_fLoss_apolloseq2_end_v0_freezeSp_fLoss_6.0k_apolloTestall_new_1119,
+        #     DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_end_v0_freezeSp_fLoss,
+        #     6000, 6000, 1, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_end_v0_freezeSp_fLoss_6.0k_apolloTestall_new_1119]
+        # Sp-D-end-a-p.a: [baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_end_v0_4.6k_apolloTestall_new_1119,
+        #     DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_end_v0,
+        #     4600, 4600, 1, baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_end_v0_4.6k_apolloTestall_new_1119]
+        # Sp-D-end-a-f-p.a: [baselineTrain_apolloSp_deepF_fLossPoseLoss_apolloseq2_end_v0_freezeSp_fLoss_8.0k_apolloTestall_new_1119,
+        #     DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_fLossPoseLoss_apolloseq2_end_v0_freezeSp_fLoss,
+        #     8000, 8000, 1, baselineTrain_apolloSp_deepF_fLossPoseLoss_apolloseq2_end_v0_freezeSp_fLoss_8.0k_apolloTestall_new_1119]
+
+        Sp-D-a-p.a: [baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_v1_7.8k_apolloTestall_new_1119,
+            DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_v1, 7800,
+            7800, 1, baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_v1_7.8k_apolloTestall_new_1119,'Sp-D-a-p-b16']
+
+        Sp-D-end-a-p.a: [baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_end_v1_2.6k_apolloTestall_new_1119,
+            DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_end_v1,
+            2600, 2600, 1, baselineTrain_apolloSp_deepF_poseLoss_apolloseq2_end_v1_2.6k_apolloTestall_new_1119,'Sp-D-end-a-p-b12']
+
+        Sp-D-a-f.a: [baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v1_12.4k_apolloTestall_new_1119,
+            DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v1, 12400,
+            12400, 1, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v1_12.4k_apolloTestall_new_1119, 'Sp-D-f-b12']
+        Sp-D-end-a-f.a: [baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_8.2k_apolloTestall_new_1119,
+            DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1,
+            8200, 8200, 1, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_8.2k_apolloTestall_new_1119, 'Sp-D-end-a-f-b8']
+
+        # Sp-D-end-a-f-p.a: [baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_poseLoss_11.6k_apolloTestall_new_1119,
+        #     DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_poseLoss,
+        #     11600, 11600, 1, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_poseLoss_11.6k_apolloTestall_new_1119, 'Sp-D-end-a-f-p-b8']
+
+        Sp-D-end-a-f-p.a: [baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_poseLoss_freezeSp_fLoss_5.4k_apolloTestall_new_1119,
+            DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_poseLoss_freezeSp_fLoss,
+            5400, 5400, 1, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_poseLoss_freezeSp_fLoss_5.4k_apolloTestall_new_1119,
+            'Sp-D-end-a-f-p-b8-f']
+        # Sp-D-end-a-f-p-b8-p.a: [baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_poseLoss_freezeSp_poseLoss_3.8k_apolloTestall_new_1119,
+        #     DeepF_err_ratio.npz, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_poseLoss_freezeSp_poseLoss,
+        #     3800, 3800, 1, baselineTrain_apolloSp_deepF_fLoss_apolloseq2_v0_end_fLoss_v1_poseLoss_freezeSp_poseLoss_3.8k_apolloTestall_new_1119]
+
+
+    seq_dict_gt:
+        Si.k: [baselineTrain_deepF_kitti_fLoss_v1_30.0k_kittiTestall_1107, opencv_8p_err_ratio.npz]
+        Si.a: [baselineTrain_deepF_kitti_fLoss_v1_30.0k_apolloTestall_1107, opencv_8p_err_ratio.npz]
+
+    seq_dict_poses: # 11/5
+        # Si-D-k-f.k: ['baselineEval_sift_kittideepF_kitti_testall_v1', 'opencv_8p_err_ratio.npz']  # get gt poses
+        # Si-D-k-f.k: ['baselineEval_sift_kittideepF_kitti_testall_v1', 'DeepF_err_ratio.npz']  # get gt poses
+        Si-D-k-f.k: ['baselineEval_kittiSp_deepF_end_kittiFLoss_freezeSp_v1_45k_kittiTestall', 'DeepF_err_ratio.npz']  # get gt poses
+        # Si-D-k-f.k: ['baselineEval_test', 'opencv_8p_err_ratio.npz']  # get gt poses
+
+    sp_epiDist: # 11/11
+        Sp.k: ['baselineEval_kitti50k_onkitti1k', 'predictions/result_dict_all.npz']
+
+    symbol_dict: 
+        models:
+            s: ['sift', 'baseline: sift + ransac']
+            d: ['deepF', 'baseline: deepF']
+            d-k: ['deepF_kitti', 'baseline: deepF trained on kitti']
+            d-a: ['deepF_apollo', 'baseline: deepF trained on apollo']
+            d-no: ['deepF_no_corrs', 'baseline: deepF w/o correspondences']
+            spd: ['sp_deepF']
+            spd-k: ['sp_deepF_kitti', 'sp + deep pretrained on kitti']
+            spd-a: ['sp_deepF_kitti', 'sp + deep pretrained on apollo']
+            spd-e-k: ['sp_deepF_poseLossKitti', 'sp + deep trained end-to-end on kitti']
+            spd-e-a: ['sp_deepF_poseLossApollo', 'sp + deep trained end-to-end on apollo']
+            # row: ['Sp-k', 'Si-D-k-f', 'Si-D-k-p', 
+            #       'Sp-D-k-f', 'Sp-D-k-p', 'Sp-D-end-k-f', 'Sp-D-end-k-p']
+            Si: [Base(Si-Ran), 'sift', 'baseline: sift + ransac']
+            Sp-k: [Base(Sp-Ran), 'sp_kitti', 'sp trained on kitti + ransac']
+            Sp-a: [Base(Sp-Ran)]
+            Sp-a-end: [Sp-a-end]
+            Si-D-k-f: [Si-Df-f, 'sift_deepF_kittiFLoss', 'Sift. DeepF trained on kitti F loss']
+            Si-D-a-f: [Si-Df-f, 'sift_deepF_kittiFLoss', 'Sift. DeepF trained on kitti F loss']
+            Si-D-k-p: [Si-Df-p, sift_deepF_kittiPoseLoss', 'Sift. DeepF trained on kitti pose loss']
+            Si-D-a-p: [Si-Df-p, sift_deepF_kittiPoseLoss', 'Sift. DeepF trained on kitti pose loss']
+            Si-D-k-f-p: [Si-Df-fp, 'sift_deepF_kittiFLossPoseLoss', 'Sift. DeepF trained on kitti F then pose loss']
+            Si-D-a-f-p: [Si-Df-fp, 'sift_deepF_kittiFLossPoseLoss', 'Sift. DeepF trained on kitti F then pose loss']
+            Sp-D-k-f: [Sp-Df-f, 'sp_deepF_kittiFLoss', 'Freezed Sp. DeepF trained on kitti F loss']
+            Sp-D-a-f: [Sp-Df-f, 'sp_deepF_kittiFLoss', 'Freezed Sp. DeepF trained on kitti F loss']
+            Sp-D-k-p: [Sp-Df-p, 'sp_deepF_kittiPoseLoss', 'Freezed Sp. DeepF trained on kitti poss loss.']
+            Sp-D-a-p: [Sp-Df-p, 'sp_deepF_kittiPoseLoss', 'Freezed Sp. DeepF trained on kitti poss loss.']
+            Sp-D-end-k-f: [Ours(Sp-Df-f-end), 'sp_deepF_end_kittiFLoss', 'Sp + DeepF end-to-end trained on kitti F loss']
+            Sp-D-end-a-f: [Ours(Sp-Df-f-end), 'sp_deepF_end_kittiFLoss', 'Sp + DeepF end-to-end trained on kitti F loss']
+            Sp-D-end-k-p: [Ours(Sp-Df-p-end), 'sp_deepF_end_kittiPoseLoss', 'Sp + DeepF end-to-end trained on kitti poss loss.']
+            Sp-D-end-a-p: [Ours(Sp-Df-p-end), 'sp_deepF_end_kittiPoseLoss', 'Sp + DeepF end-to-end trained on kitti poss loss.']
+            Sp-D-end-k-f-p: [Ours(Sp-Df-fp-end), 'sp_deepF_end_kittiPoseLoss', 'Sp + DeepF end-to-end trained on kitti F and pose loss.']
+            Sp-D-end-a-f-p: [Ours(Sp-Df-fp-end), 'sp_deepF_end_kittiPoseLoss', 'Sp + DeepF end-to-end trained on kitti F and pose loss.']
+            Sp-D-end-k-f-p-1: [Sp-Df-fp-end-1]
+            Sp-D-end-k-f-p-2: [Sp-Df-fp-end-2]
+            Sp-D-end-k-f-p-3: [Sp-Df-fp-end-3]
+        datasets:
+            k: ['kitti', 'kitti testing set (1.2k samples)']
+            a: ['apollo', 'apollo testing set raod11 (5.6k samples)']
+
+        files:
+            our_name: ['DeepF_err_ratio.npz', 'deepF method']
+            base_name: ['opencv_8p_err_ratio.npz', 'opencv 8-point method']
+
+    err_mat: ['err_q', 'err_t', 'epi_dists'] # for rot, trans error
+    # err_mat: ["epi_dist_mean_gt", "num_prob", "num_warped_prob", "num_matches"] # for epiDist
+    # err_mat: ['err_q', 'err_t', 'epi_dists', 'relative_poses_body', 'relative_poses_cam']
+    thresh:
+        thd_list: [0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10]
+        
+output: # sort the tables using rows, columns
+    table_1:
+        row: ['s', 'd-k', 'd-a', 'spd-k', 'spd-e-k', 'spd-a', 'spd-e-a']
+        col: ['k', 'a']
+        # entries_order: 
+        entries: {
+            'err_q': [0, 1, 2, 3, 6],
+            'err_q_mean': [0],
+            'err_q_median': [0],
+            
+            'err_t': [0, 1, 2, 3, 6],
+            'err_t_mean': [0],
+            'err_t_median': [0],
+        }
+        sep: '.'
+
+    #### kitti models
+    table_apolloModels: # on kitti and apollo
+        row: ['Si', 'Sp-a', 'Si-D-a-f', 'Si-D-a-p', 'Si-D-a-f-p', 'Sp-D-a-f', 
+                'Sp-D-a-p', 'Sp-D-end-a-f', 'Sp-D-end-a-p', 'Sp-D-end-a-f-p']
+        # row: ['Si', 'Sp-a', 'Si-D-a-f', 'Sp-D-a-f', 'Sp-D-a-p', 'Sp-D-end-a-f', 'Sp-D-end-a-p', 'Sp-D-end-a-f-p']
+
+        col: [k, 'a'] # a (apollo), k (kitti)
+        # entries_order: 
+        entries: {
+            'err_q': [3],  
+            'err_q_mean': [0],
+            'err_q_median': [0],
+            'err_t': [7],
+            'err_t_mean': [0],
+            'err_t_median': [0],
+        }
+        sep: '.'
+        highlight: true
+
+    table_kittiModels: # on kitti and apollo
+        row: ['Si', 'Sp-k', 'Si-D-k-f', 'Si-D-k-p', 'Si-D-k-f-p', 
+            'Sp-D-k-f', 'Sp-D-k-p', 'Sp-D-end-k-f', 'Sp-D-end-k-p', 'Sp-D-end-k-f-p']
+        # row: ['Si', 'Sp-a', 'Si-D-a-f', 'Sp-D-a-f', 'Sp-D-a-p', 'Sp-D-end-a-f', 'Sp-D-end-a-p', 'Sp-D-end-a-f-p']
+
+        col: [k, 'a'] # a (apollo), k (kitti)
+        # entries_order: 
+        entries: {
+            'err_q': [3],  
+            'err_q_mean': [0],
+            'err_q_median': [0],
+            'err_t': [7],
+            'err_t_mean': [0],
+            'err_t_median': [0],
+        }
+        sep: '.'
+        highlight: true
+
+    ##### tables on the paper #####
+    table_kittiModels_ours_kit: # on kitti and apollo
+        row: ['Sp-k', 
+            'Sp-D-k-f', 'Sp-D-k-p', 'Sp-D-end-k-f', 'Sp-D-end-k-p', 'Sp-D-end-k-f-p']
+        # row: ['Si', 'Sp-a', 'Si-D-a-f', 'Sp-D-a-f', 'Sp-D-a-p', 'Sp-D-end-a-f', 'Sp-D-end-a-p', 'Sp-D-end-a-f-p']
+
+        col: [k] # a (apollo), k (kitti)
+        # entries_order: 
+        entries: {
+            'err_q': [3],  
+            'err_q_mean': [0],
+            'err_q_median': [0],
+            'err_t': [7],
+            'err_t_mean': [0],
+            'err_t_median': [0],
+        }
+        sep: '.'
+        highlight: true
+
+    table_kittiModels_baselines_kit: # on kitti and apollo
+        row: ['Si', 'Si-D-k-f', 'Si-D-k-p', 'Si-D-k-f-p', 
+            'Sp-D-end-k-f-p']
+        # row: ['Si', 'Sp-a', 'Si-D-a-f', 'Sp-D-a-f', 'Sp-D-a-p', 'Sp-D-end-a-f', 'Sp-D-end-a-p', 'Sp-D-end-a-f-p']
+
+        col: [k] # a (apollo), k (kitti)
+        # entries_order: 
+        entries: {
+            'err_q': [3],  
+            'err_q_mean': [0],
+            'err_q_median': [0],
+            'err_t': [7],
+            'err_t_mean': [0],
+            'err_t_median': [0],
+        }
+        sep: '.'
+        highlight: true
+
+    table_kittiModels_our_apo: # on kitti and apollo
+        row: ['Sp-k', 
+            'Sp-D-k-f', 'Sp-D-k-p', 'Sp-D-end-k-f', 'Sp-D-end-k-p', 'Sp-D-end-k-f-p']
+        # row: ['Si', 'Sp-a', 'Si-D-a-f', 'Sp-D-a-f', 'Sp-D-a-p', 'Sp-D-end-a-f', 'Sp-D-end-a-p', 'Sp-D-end-a-f-p']
+
+        col: ['a'] # a (apollo), k (kitti)
+        # entries_order: 
+        entries: {
+            'err_q': [3],  
+            'err_q_mean': [0],
+            'err_q_median': [0],
+            'err_t': [7],
+            'err_t_mean': [0],
+            'err_t_median': [0],
+        }
+        sep: '.'
+        highlight: true
+
+    table_kittiModels_baselines_apo: # on kitti and apollo
+        row: ['Si', 'Si-D-k-f', 'Si-D-k-p', 'Si-D-k-f-p', 
+            'Sp-D-end-k-f-p']
+        # row: ['Si', 'Sp-a', 'Si-D-a-f', 'Sp-D-a-f', 'Sp-D-a-p', 'Sp-D-end-a-f', 'Sp-D-end-a-p', 'Sp-D-end-a-f-p']
+
+        col: [a] # a (apollo), k (kitti)
+        # entries_order: 
+        entries: {
+            'err_q': [3],  
+            'err_q_mean': [0],
+            'err_q_median': [0],
+            'err_t': [7],
+            'err_t_mean': [0],
+            'err_t_median': [0],
+        }
+        sep: '.'
+        highlight: true
+
+    ##### end tables on the paper #####
+
+    table_kittiModels_gamma_exp:
+        row: ['Si', 'Si-D-k-f', 'Si-D-k-p', 'Si-D-k-f-p', 
+            'Sp-D-end-k-f-p', Sp-D-end-k-f-p-gam1.5]
+        # row: ['Si', 'Sp-a', 'Si-D-a-f', 'Sp-D-a-f', 'Sp-D-a-p', 'Sp-D-end-a-f', 'Sp-D-end-a-p', 'Sp-D-end-a-f-p']
+
+        col: [k] # a (apollo), k (kitti)
+        # entries_order: 
+        entries: {
+            'err_q': [3],  
+            'err_q_mean': [0],
+            'err_q_median': [0],
+            'err_t': [7],
+            'err_t_mean': [0],
+            'err_t_median': [0],
+        }
+        sep: '.'
+        highlight: true        
+
+    ##### apollo models
+
+    table_apolloModels_ours_kit: # on kitti and apollo
+        row: ['Sp-a', 
+            'Sp-D-a-f', 'Sp-D-a-p', 
+            'Sp-D-end-a-f', 'Sp-D-end-a-p', 
+            'Sp-D-end-a-f-p'
+        ]
+
+        col: [k] # a (apollo), k (kitti)
+        # entries_order: 
+        entries: {
+            'err_q': [3],  
+            'err_q_mean': [0],
+            'err_q_median': [0],
+            'err_t': [7],
+            'err_t_mean': [0],
+            'err_t_median': [0],
+        }
+        sep: '.'
+        highlight: true
+
+    table_apolloModels_baselines_kit: # on kitti and apollo
+        row: ['Si', 'Si-D-a-f', 'Si-D-a-p',
+         'Sp-D-end-a-f-p',
+         ]
+
+        col: [k] # a (apollo), k (kitti)
+        # entries_order: 
+        entries: {
+            'err_q': [3],  
+            'err_q_mean': [0],
+            'err_q_median': [0],
+            'err_t': [7],
+            'err_t_mean': [0],
+            'err_t_median': [0],
+        }
+        sep: '.'
+        highlight: true
+
+    table_apolloModels_our_apo: # on kitti and apollo
+        row: ['Sp-a', 
+            'Sp-D-a-f', 'Sp-D-a-p', 
+            'Sp-D-end-a-f', 'Sp-D-end-a-p', 
+            'Sp-D-end-a-f-p',
+        ]
+
+        col: ['a'] # a (apollo), k (kitti)
+        # entries_order: 
+        entries: {
+            'err_q': [3],  
+            'err_q_mean': [0],
+            'err_q_median': [0],
+            'err_t': [7],
+            'err_t_mean': [0],
+            'err_t_median': [0],
+        }
+        sep: '.'
+        highlight: true
+
+    table_apolloModels_baselines_apo: # on kitti and apollo
+        row: ['Si', 'Si-D-a-f', 'Si-D-a-p',
+         'Sp-D-end-a-f-p']
+
+        col: [a] # a (apollo), k (kitti)
+        # entries_order: 
+        entries: {
+            'err_q': [3],  
+            'err_q_mean': [0],
+            'err_q_median': [0],
+            'err_t': [7],
+            'err_t_mean': [0],
+            'err_t_median': [0],
+        }
+        sep: '.'
+        highlight: true
+
+
+    table_apollo: # for supplementary materials
+        row: ['Si', 'Sp-a', 'Si-D-a-f', 'Si-D-a-p',
+        # 'Si-D-a-f-p', 
+        'Sp-D-a-f', 'Sp-D-a-p', 'Sp-D-end-a-f', 'Sp-D-end-a-p', 'Sp-D-end-a-f-p',
+        'Sp-D-a-p-b16', 'Si-D-a-p-b4', 'Sp-D-end-a-p-b12',
+        'Sp-D-f-b12', 'Sp-D-f-end-b8']
+        # row: ['Si', 'Sp-a', 'Si-D-a-f', 'Sp-D-a-f', 'Sp-D-a-p', 'Sp-D-end-a-f', 'Sp-D-end-a-p', 'Sp-D-end-a-f-p']
+
+        # col: [k, 'a'] # a (apollo), k (kitti)
+        col: ['a'] # a (apollo), k (kitti)
+        # entries_order: 
+        entries: {
+            ## supplementary table
+            'err_q': [0, 1, 2, 3, 5],  # supplementary table
+            'err_q_mean': [0],
+            'err_q_median': [0],       
+            'err_t': [3, 4, 5, 6, 7], # supplementary table
+            'err_t_mean': [0],
+            'err_t_median': [0],
+            
+            ## main table
+            # 'err_q': [3],  
+            # 'err_q_mean': [0],
+            # 'err_q_median': [0],
+            # 'err_t': [7],
+            # 'err_t_mean': [0],
+            # 'err_t_median': [0],
+        }
+        sep: '.'
+
+    table_ablation:
+        # row: ['Sp-k', 'Si-D-k-f', 'Si-D-k-p', 'Sp-D-k-f', 'Sp-D-k-p', 'Sp-D-end-k-f']
+        # row: ['Si', 'Sp-k', 'Si-D-k-f', 'Si-D-k-p', 'Si-D-k-f-p', 'Sp-D-k-f', 'Sp-D-k-p']
+        # row: ['Si', 'Sp-k', 'Si-D-k-f', 'Si-D-k-p', 'Si-D-k-f-p', 'Sp-D-k-f', 'Sp-D-k-p', 'Sp-D-end-k-f', 'Sp-D-end-k-p', 'Sp-D-end-k-f-p']
+        row: ['Si', 'Sp-k', 'Si-D-k-f', 'Si-D-k-p', 'Si-D-k-f-p', 
+            'Sp-D-k-f', 'Sp-D-k-p', 'Sp-D-end-k-f', 'Sp-D-end-k-p', 'Sp-D-end-k-f-p']
+        # col: [k, 'a'] # a (apollo), k (kitti)
+        col: [a] # a (apollo), k (kitti)
+        # entries_order: 
+        entries: {
+            # 'err_q': [0, 1, 2, 3, 6],
+            # 'err_q': [3, 6],
+            # 'err_q': [1, 3, 6],
+            # 'err_t': [0, 1, 2, 3, 6],
+            # 'err_t': [3, 6],
+            # 'err_t': [3, 6, 7],
+
+            ## supplementary table
+            'err_q': [0, 1, 2, 3, 5],  # supplementary table
+            'err_q_mean': [0],            
+            'err_q_median': [0],            
+            'err_t': [3, 4, 5, 6, 7], # supplementary table
+            'err_t_mean': [0],
+            'err_t_median': [0],
+            
+            ## main table
+            # 'err_q': [3],  
+            # 'err_q_mean': [0],
+            # 'err_q_median': [0],
+            # 'err_t': [7],
+            # 'err_t_mean': [0],
+            # 'err_t_median': [0],
+        }
+        sep: '.'

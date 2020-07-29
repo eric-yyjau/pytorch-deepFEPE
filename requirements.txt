@@ -1,0 +1,30 @@
+# torch >= 0.4.1
+# torchvision
+PyYAML
+path.py
+argparse
+scipy
+opencv-python==3.4.2.16
+opencv-contrib-python==3.4.2.16
+matplotlib
+imageio
+tqdm
+tensorflow
+tensorboardX
+tqdm
+pyyaml
+imageio
+imgaug
+sty
+pebble
+pykitti
+sklearn
+torchgeometry
+torchsummary
+coloredlogs
+PyYaml
+
+setuptools
+wheel
+
+pytest

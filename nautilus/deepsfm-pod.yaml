@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: deepsfm-pod
+  namespace: ucsd-haosulab
+  labels:
+    user: yyjau
+spec:
+  containers:
+  - name: gpu-container
+    image: pytorch/pytorch:1.0.1-cuda10.0-cudnn7-runtime
+    # imagePullPolicy: Always
+    args: ["sleep", "infinity"]
+    resources:
+      requests:
+        cpu: "2"
+        memory: "8Gi"
+        nvidia.com/gpu: 0
+      limits:
+        cpu: "2"
+        memory: "8Gi"
+        nvidia.com/gpu: 0
+    volumeMounts:
+      - name: cephfs-vol
+        mountPath: /cephfs
+  volumes:
+  - name: cephfs-vol
+    flexVolume:
+      driver: ceph.rook.io/rook
+      fsType: ceph
+      options:
+        fsName: nautilusfs
+        clusterNamespace: rook
+        path: /ucsd-haosulab
+        mountUser: ucsd-haosulab
+        mountSecret: ceph-fs-secret
+  # affinity:
+  #   nodeAffinity:
+  #     requiredDuringSchedulingIgnoredDuringExecution:
+  #       nodeSelectorTerms:
+  #       - matchExpressions:
+  #         - key: gpu-type
+  #           operator: In
+  #           values:
+  #           - 1080Ti

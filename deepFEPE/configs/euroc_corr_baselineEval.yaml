@@ -1,0 +1,84 @@
+name: 'euroc_odo_good_corr'
+
+data:
+    dataset: 'kitti_odo_corr'
+    dump_root: '/data/euroc/euroc_dump/test3/' # tum dataset
+    
+    cache_in_memory: true
+    sequence_length: 2
+    delta_ij: 1
+    batch_size: 6 # 6, reduce due to GPU memory issue # 64
+    good_num: 1000
+    read_what:
+        with_X: false
+        with_pose: true
+        with_sift: true
+        with_sift_des: false
+        with_SP: false
+        with_quality: true
+        with_qt: true
+        with_imgs: false
+    image:
+        size: [480, 752, 3] # The size when you DUMP the image and SIFTs (sets the limit for the saved image and SIFT)
+    preprocessing:
+        # resize: [128, 416]
+        # resize: [192, 624]
+        resize: [480, 752]
+
+    read_params:
+        use_h5: false # set to false to use .npy
+
+model:
+    name: 'GoodCorresNet_layers_deepF'
+    depth: 5
+    clamp_at: 0.02
+    if_quality: false # True
+    if_goodCorresArch: False
+    if_lidar_corres: false
+    if_img_feat: false
+    if_img_des_to_pointnet: false
+    quality_size: 0 #### check!! 2
+    if_cpu_svd: true
+    if_learn_offsets: false
+    if_tri_depth: false
+    if_qt_loss: false # true # train experiment
+    if_sample_loss: false
+    if_SP: false #false
+
+exps:
+    five_point: False
+    base_name: 'opencv_8p'
+    our_name: 'DeepF'
+    filename: 'err_ratio.npz'
+
+training:
+    reproduce: true  # set true to freeze random seed
+    learning_rate: 0.0001
+    lr_decay_step: 10
+    lr_decay_rate: 0.9
+    seed: 0
+    workers_train: 16
+    workers_val: 2
+    train_iter: 0 #500000
+    val_interval: 1 # one validation of entire val set every N **training** steps
+    val_interval_in_train: 1000
+    val_batches: 100 # set to -1 to disable validation limit
+    val_show_interval: 1 # one show of the current training from to Tensorboard every N training steps
+    save_interval: 1 # 200
+
+    retrain: false # set true for new model
+    reset_iter: true
+    # pretrained: ''
+    pretrained: 'logs/baselineTrain_deepF_kitti_fLoss_v1/checkpoints/deepFNet_30000_checkpoint.pth.tar'
+    # pretrained: 'logs/baselineTrain_sp_deepF_kitti_qtLoss_v0/checkpoints/deepFNet_20000_checkpoint.pth.tar'
+
+    retrain_SP: false # set true for new model
+    reset_iter_SP: false
+    pretrained_SP: ''
+    # pretrained_SP: 'logs/superpoint_kitti_heat2_0/checkpoints/superPointNet_50000_checkpoint.pth.tar'
+    # pretrained_SP: 'logs/baselineTrain_sp_deepF_kitti_qtLoss_v0/checkpoints/superPointNet_20000_checkpoint.pth.tar'
+
+    # pretrained_SP: 'logs/test_baselineTrain/checkpoints/superPointNet_5_checkpoint.pth.tar'
+
+    
+seed: 0

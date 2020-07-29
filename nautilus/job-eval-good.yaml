@@ -1,0 +1,56 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: yyjau-eval-good-3
+  namespace: ucsd-haosulab
+  labels:
+    user: yyjau  # Specify your name
+spec:
+  ttlSecondsAfterFinished: 86400  # Wait one day to delete completed jobs
+  template:
+    spec:
+      containers:
+      - name: gpu-container
+        image: docker.io/yjau/nau-base:latest  # docker image
+        # imagePullPolicy: Always
+        # - "conda activate /cephfs/yyjau/.local/conda/envs/py36-torch1.1-deepsfm; python"
+        # cd /cephfs/yyjau/Documents/deepSfm/
+        # python run_eval_good.py kitti  --exper_path  exp_1108/logs --check_exist --runEval
+        command:
+        - "zsh; cd /cephfs/yyjau/Documents/deepSfm; conda activate /cephfs/yyjau/.local/conda/envs/py36-torch1.1-deepsfm; ls"
+        # - "zsh; cd /cephfs/yyjau/Documents/deepSfm; conda activate /cephfs/yyjau/.local/conda/envs/py36-torch1.1-deepsfm; python"
+        # args:
+        # - "run_eval_good.py kitti  --exper_path  exp_1109/logs --check_exist --runEval"
+        # args: ["sleep", "infinity"]
+        # args:
+        # - "run_eval_good.py kitti  --exper_path  exp_1108/logs --check_exist --runEval"
+        resources:
+          requests:
+            cpu: "16"
+            memory: "16Gi"
+            nvidia.com/gpu: 1
+          limits:
+            cpu: "16"
+            memory: "32Gi"
+            nvidia.com/gpu: 1
+        volumeMounts:
+          - name: cephfs-vol
+            mountPath: /cephfs
+          - name: dshm
+            mountPath: /dev/shm 
+      volumes:
+      - name: dshm  # shared memory
+        emptyDir:
+          medium: Memory
+      - name: cephfs-vol  # shared filesystem
+        flexVolume:
+          driver: ceph.rook.io/rook
+          fsType: ceph
+          options:
+            fsName: nautilusfs
+            clusterNamespace: rook
+            path: /ucsd-haosulab
+            mountUser: ucsd-haosulab
+            mountSecret: ceph-fs-secret
+      restartPolicy: Never
+  backoffLimit: 2
