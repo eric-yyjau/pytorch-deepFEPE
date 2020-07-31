@@ -7,7 +7,7 @@ This repo is the official implementation of the paper:
 
 **IROS 2020**
 
-See our [paper]() and [video](https://www.youtube.com/watch?v=2q-_-MO4GBI&list=PLYCp1NXEzCqgIkyQkzixon3VtQtcYcFPv) for more details.
+See our [arxiv](https://arxiv.org/abs/2007.15122), [paper](https://arxiv.org/pdf/2007.15122) and [video](https://www.youtube.com/watch?v=2q-_-MO4GBI&list=PLYCp1NXEzCqgIkyQkzixon3VtQtcYcFPv) for more details.
 
 ![pipeline](./imgs/fig1.png)
 
