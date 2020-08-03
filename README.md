@@ -3,7 +3,7 @@ This repo is the official implementation of the paper:
 
 **Deep Keypoint-Based Camera Pose Estimation with Geometric Constraints**.
 
-[You-Yi Jau*](http://eric-yyjau.github.io/), Rui Zhu*, Hao Su, Manmohan Chandraker
+[You-Yi Jau*](http://eric-yyjau.github.io/), Rui Zhu*, Hao Su, Manmohan Chandraker (*equal contribution)
 
 **IROS 2020**
 
@@ -260,7 +260,7 @@ tensorboard --logdir=runs/train_good
 Please cite the following papers.
 - DeepFEPE
 ```
-@misc{2020_youyi_deepFEPE,
+@misc{2020_jau_zhu_deepFEPE,
 Author = {You-Yi Jau and Rui Zhu and Hao Su and Manmohan Chandraker},
 Title = {Deep Keypoint-Based Camera Pose Estimation with Geometric Constraints},
 Year = {2020},
