@@ -31,7 +31,7 @@ pip install -r requirements.txt
 pip install -r requirements_torch.txt # install pytorch
 ```
 ### Pull and link Superpoint model
-- install superpoint module
+- install [superpoint module](https://github.com/eric-yyjau/pytorch-superpoint.git)
 ```
 git clone https://github.com/eric-yyjau/pytorch-superpoint.git
 cd pytorch-superpoint
@@ -260,6 +260,12 @@ tensorboard --logdir=runs/train_good
 Please cite the following papers.
 - DeepFEPE
 ```
+@misc{2020_youyi_deepFEPE,
+Author = {You-Yi Jau and Rui Zhu and Hao Su and Manmohan Chandraker},
+Title = {Deep Keypoint-Based Camera Pose Estimation with Geometric Constraints},
+Year = {2020},
+Eprint = {arXiv:2007.15122},
+}
 ```
 - SuperPoint
 ```
