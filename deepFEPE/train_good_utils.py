@@ -50,6 +50,44 @@ from superpoint.utils.utils import (
 def mean_list(list):
     return sum(list) / len(list)
 
+## functions for inference
+def mat_E_to_pose(E_ests_layers):
+    """ convert from essential matrix to R,t
+    params:
+        E_ests_layers -> [B, 3, 3]: batch essential matrices
+    """
+    ## many layers of essential matrices
+    for layer_idx, E_ests in enumerate(E_ests_layers):
+        R_angle_error_list = []
+        t_angle_error_list = []
+        t_l2_error_list = []
+        q_l2_error_list = []
+
+        # ================= method 1/2 ===============
+        ## convert E mat to R, t
+        R12s_list = []
+        t12s_list = []
+        for idx, E_cam in enumerate(E_ests.cpu().transpose(1, 2)):
+            # FU, FD, FV= torch.svd(E_cam, some=True)
+            # # print('[info.Debug @_E_from_XY] Singular values for recovered E(F):\n', FD.detach().numpy())
+            # S_110 = torch.diag(torch.tensor([1., 1., 0.], dtype=FU.dtype, device=FU.device))
+            # E_cam = torch.mm(FU, torch.mm(S_110, FV.t()))
+
+            R12s, t12s, M12s = utils_F._get_M2s(E_cam)
+            R12s_list.append(R12s)
+            t12s_list.append(t12s)
+        R12s_batch_cam = [
+            torch.stack([R12s[0] for R12s in R12s_list]).to(device),
+            torch.stack([R12s[1] for R12s in R12s_list]).to(device),
+        ]
+        t12s_batch_cam = [
+            torch.stack([t12s[0] for t12s in t12s_list]).to(device),
+            torch.stack([t12s[1] for t12s in t12s_list]).to(device),
+        ]  # already unit norm
+
+    ## aggregate   
+    return 0 
+
 ##### loss functions #####
 
 def get_loss_softmax(F_gts, pts1_virt, pts2_virt, clamp_at):
@@ -961,47 +999,47 @@ def prepare_model(config, net, device, n_iter, n_iter_val, net_postfix=""):
 
 
 ##### deprecated #####
-def get_all_loss(
-    outs,
-    x1_normalizedK,
-    x2_normalizedK,
-    pts1_virt_normalizedK,
-    pts2_virt_normalizedK,
-    Ks,
-    E_gts,
-    loss_params,
-):
-    logits = outs["logits"]  # [batch_size, N]
-    logits_softmax = F.softmax(logits, dim=1)
+# def get_all_loss(
+#     outs,
+#     x1_normalizedK,
+#     x2_normalizedK,
+#     pts1_virt_normalizedK,
+#     pts2_virt_normalizedK,
+#     Ks,
+#     E_gts,
+#     loss_params,
+# ):
+#     logits = outs["logits"]  # [batch_size, N]
+#     logits_softmax = F.softmax(logits, dim=1)
 
-    E_ests = None
-    loss_E = 0.0
-    E_ests = get_E_ests(
-        x1_normalizedK, x2_normalizedK, Ks, logits_softmax, if_normzliedK=True
-    )
+#     E_ests = None
+#     loss_E = 0.0
+#     E_ests = get_E_ests(
+#         x1_normalizedK, x2_normalizedK, Ks, logits_softmax, if_normzliedK=True
+#     )
 
-    loss_all, losses = get_loss_softmax(
-        E_ests, pts1_virt_normalizedK, pts2_virt_normalizedK, loss_params["clamp_at"]
-    )
-    losses_np = losses.detach().cpu().numpy()
-    if np.isnan(np.amax(losses_np)):
-        programPause = raw_input("Press the <ENTER> key to continue...")
+#     loss_all, losses = get_loss_softmax(
+#         E_ests, pts1_virt_normalizedK, pts2_virt_normalizedK, loss_params["clamp_at"]
+#     )
+#     losses_np = losses.detach().cpu().numpy()
+#     if np.isnan(np.amax(losses_np)):
+#         programPause = raw_input("Press the <ENTER> key to continue...")
 
-    loss_layers = []
-    loss_layers.append(loss_all)
+#     loss_layers = []
+#     loss_layers.append(loss_all)
 
-    if loss_params["model"] == "GoodCorresNet_layers":
-        # logging.info('Adding losses from following layers...')
-        for E_ests in outs["E_ests_list"]:
-            loss, losses = get_loss_softmax(
-                E_ests,
-                pts1_virt_normalizedK,
-                pts2_virt_normalizedK,
-                loss_params["clamp_at"],
-            )
-            loss_layers.append(loss)
-            loss_all += loss
-        loss_all = loss_all / len(loss_layers)
+#     if loss_params["model"] == "GoodCorresNet_layers":
+#         # logging.info('Adding losses from following layers...')
+#         for E_ests in outs["E_ests_list"]:
+#             loss, losses = get_loss_softmax(
+#                 E_ests,
+#                 pts1_virt_normalizedK,
+#                 pts2_virt_normalizedK,
+#                 loss_params["clamp_at"],
+#             )
+#             loss_layers.append(loss)
+#             loss_all += loss
+#         loss_all = loss_all / len(loss_layers)
 
-    return loss_all, loss_layers, loss_E, E_ests, logits_softmax, logits
+#     return loss_all, loss_layers, loss_E, E_ests, logits_softmax, logits
 
