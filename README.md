@@ -33,6 +33,17 @@ conda activate py36-deepfepe
 pip install -r requirements.txt
 pip install -r requirements_torch.txt # install pytorch
 ```
+
+### Install the deepFEPE package
+```
+git checkout module_20201003
+# install
+pip install --upgrade setuptools wheel
+python setup.py bdist_wheel
+pip install -e .
+```
+
+
 ### Pull and link Superpoint model
 - install [superpoint module](https://github.com/eric-yyjau/pytorch-superpoint.git)
 ```
