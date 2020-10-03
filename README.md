@@ -15,6 +15,9 @@ See our [arxiv](https://arxiv.org/abs/2007.15122), [paper](https://arxiv.org/pdf
 ## Installation
 ### Clone repo and submodules
 ```shell
+# please clone without git lfs and download from google drive if possible
+# "This repository is over its data quota. Purchase more data packs to restore access."
+export GIT_LFS_SKIP_SMUDGE=1
 git clone https://github.com/eric-yyjau/pytorch-deepFEPE.git
 git pull --recurse-submodules
 ```
