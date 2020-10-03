@@ -72,7 +72,8 @@ training:
     train: false
     reset_iter: true
     ### trained results
-    pretrained: 'logs/test_kitti/checkpoints/deepFNet_100000_checkpoint.pth.tar'
+    # pretrained: 'logs/test_kitti/checkpoints/deepFNet_100000_checkpoint.pth.tar'
+    pretrained: 'deepFEPE/logs/kitti_models/baselineTrain_deepF_kitti_fLoss_v1/checkpoints/deepFNet_30000_checkpoint.pth.tar'
 
     ### baseline - sift
     # pretrained: 'logs/baselineTrain_deepF_kitti_fLoss_v1/checkpoints/deepFNet_30000_checkpoint.pth.tar'
@@ -100,9 +101,9 @@ training:
     retrain_SP: false # set true for new model
     train_SP: false
     reset_iter_SP: false
-    pretrained_SP: ''
+    # pretrained_SP: ''
     ## kitti
-    # pretrained_SP: 'logs/superpoint_kitti_heat2_0/checkpoints/superPointNet_50000_checkpoint.pth.tar'
+    pretrained_SP: 'deepFEPE/logs/superpoint_kitti_heat2_0/checkpoints/superPointNet_50000_checkpoint.pth.tar'
     ### end-to-end
     ### f loss
     # pretrained_SP: 'logs/baselineTrain_kittiSp_deepF_end_kittiFLoss_freezeSp_v1/checkpoints/superPointNet_45000_checkpoint.pth.tar'

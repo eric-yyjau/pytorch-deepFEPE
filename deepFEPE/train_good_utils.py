@@ -9,6 +9,8 @@ Authors:
     You-Yi Jau, Rui Zhu
 
 """
+import os, sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import numpy as np
 np.set_printoptions(precision=4, suppress=True)
@@ -19,7 +21,6 @@ import torch.nn.functional as F
 import torch.optim as optim
 
 import cv2
-import os, sys
 from pebble import ProcessPool
 import multiprocessing as mp
 from sklearn.metrics import f1_score
