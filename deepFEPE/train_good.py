@@ -38,15 +38,15 @@ import torch.optim as optim
 from tensorboardX import SummaryWriter
 
 # our modules
-from settings import EXPER_PATH
+from .settings import EXPER_PATH
 
-from utils.loader import (
+from deepFEPE.utils.loader import (
     dataLoader,
     modelLoader,
     pretrainedLoader_net,
     pretrainedLoader_opt,
 )
-from train_good_utils import (
+from deepFEPE.train_good_utils import (
     get_all_loss,
     val_rt,
     get_all_loss_DeepF,
@@ -56,14 +56,14 @@ from train_good_utils import (
     get_matches_from_SP,
 )
 
-import dsac_tools.utils_F as utils_F  # If cannot find: export KITTI_UTILS_PATH='/home/ruizhu/Documents/Projects/kitti_instance_RGBD_utils'
-import dsac_tools.utils_opencv as utils_opencv  # If cannot find: export KITTI_UTILS_PATH='/home/ruizhu/Documents/Projects/kitti_instance_RGBD_utils'
-import dsac_tools.utils_vis as utils_vis  # If cannot find: export KITTI_UTILS_PATH='/home/ruizhu/Documents/Projects/kitti_instance_RGBD_utils'
-import dsac_tools.utils_misc as utils_misc  # If cannot find: export KITTI_UTILS_PATH='/home/ruizhu/Documents/Projects/kitti_instance_RGBD_utils'
-import dsac_tools.utils_geo as utils_geo  # If cannot find: export KITTI_UTILS_PATH='/home/ruizhu/Documents/Projects/kitti_instance_RGBD_utils'
+import deepFEPE.dsac_tools.utils_F as utils_F  # If cannot find: export KITTI_UTILS_PATH='/home/ruizhu/Documents/Projects/kitti_instance_RGBD_utils'
+import deepFEPE.dsac_tools.utils_opencv as utils_opencv  # If cannot find: export KITTI_UTILS_PATH='/home/ruizhu/Documents/Projects/kitti_instance_RGBD_utils'
+import deepFEPE.dsac_tools.utils_vis as utils_vis  # If cannot find: export KITTI_UTILS_PATH='/home/ruizhu/Documents/Projects/kitti_instance_RGBD_utils'
+import deepFEPE.dsac_tools.utils_misc as utils_misc  # If cannot find: export KITTI_UTILS_PATH='/home/ruizhu/Documents/Projects/kitti_instance_RGBD_utils'
+import deepFEPE.dsac_tools.utils_geo as utils_geo  # If cannot find: export KITTI_UTILS_PATH='/home/ruizhu/Documents/Projects/kitti_instance_RGBD_utils'
 
-from Train_model_pipeline import init_dict_of_lists
-from Train_model_pipeline import Train_model_pipeline
+from deepFEPE.Train_model_pipeline import init_dict_of_lists
+from deepFEPE.Train_model_pipeline import Train_model_pipeline
 
 
 # functions from superpoint

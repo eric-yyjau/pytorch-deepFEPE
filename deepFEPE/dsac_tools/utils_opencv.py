@@ -4,10 +4,10 @@ import scipy
 import torch
 import random
 import matplotlib.pyplot as plt
-import dsac_tools.utils_vis as utils_vis
-import dsac_tools.utils_misc as utils_misc
-import dsac_tools.utils_F as utils_F
-import dsac_tools.utils_geo as utils_geo
+import deepFEPE.dsac_tools.utils_vis as utils_vis
+import deepFEPE.dsac_tools.utils_misc as utils_misc
+import deepFEPE.dsac_tools.utils_F as utils_F
+import deepFEPE.dsac_tools.utils_geo as utils_geo
 
 def PIL_to_gray(im_PIL):
     img1_rgb = np.array(im_PIL)
