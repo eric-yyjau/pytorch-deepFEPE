@@ -22,9 +22,9 @@ from superpoint.utils.utils import save_checkpoint
 from superpoint.Train_model_frontend import Train_model_frontend
 
 ## class specific
-from utils.loader import dataLoader, modelLoader  # pretrainedLoader
-import dsac_tools.utils_misc as utils_misc  # If cannot find: export KITTI_UTILS_PATH='/home/ruizhu/Documents/Projects/kitti_instance_RGBD_utils'
-from train_good_utils import (
+from deepFEPE.utils.loader import dataLoader, modelLoader  # pretrainedLoader
+import deepFEPE.dsac_tools.utils_misc as utils_misc  # If cannot find: export KITTI_UTILS_PATH='/home/ruizhu/Documents/Projects/kitti_instance_RGBD_utils'
+from deepFEPE.train_good_utils import (
     get_all_loss,
     val_rt,
     get_all_loss_DeepF,

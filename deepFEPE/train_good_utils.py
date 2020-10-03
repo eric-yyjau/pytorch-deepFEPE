@@ -295,6 +295,7 @@ def get_Rt_loss(
     return return_list
 
 
+
 def get_all_loss_DeepF(
     outs, pts1_virt_ori, pts2_virt_ori, Ks, loss_params, get_residual_summaries=True
 ):
