@@ -36,8 +36,11 @@ pip install -r requirements_torch.txt # install pytorch
 
 ### Install the deepFEPE package
 ```
+export GIT_LFS_SKIP_SMUDGE=1
+git clone https://github.com/eric-yyjau/pytorch-deepFEPE.git
 git checkout module_20201003
 # install
+
 pip install --upgrade setuptools wheel
 python setup.py bdist_wheel
 pip install -e .

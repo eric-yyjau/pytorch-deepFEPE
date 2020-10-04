@@ -25,7 +25,6 @@ from superpoint.Train_model_frontend import Train_model_frontend
 from deepFEPE.utils.loader import dataLoader, modelLoader  # pretrainedLoader
 import deepFEPE.dsac_tools.utils_misc as utils_misc  # If cannot find: export KITTI_UTILS_PATH='/home/ruizhu/Documents/Projects/kitti_instance_RGBD_utils'
 from deepFEPE.train_good_utils import (
-    get_all_loss,
     val_rt,
     get_all_loss_DeepF,
     write_metrics_summary,

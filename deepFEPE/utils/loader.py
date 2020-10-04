@@ -123,9 +123,9 @@ def modelLoader(model, **params):
         #     net = Norm8PointNetOffset(**params)
         # else:
         if params["if_sample_loss"]: # default as false
-            from models.DeepFNetSampleLoss import Norm8PointNet as model
+            from deepFEPE.models.DeepFNetSampleLoss import Norm8PointNet as model
         else:
-            from models.DeepFNet import DeepFNet as model
+            from deepFEPE.models.DeepFNet import DeepFNet as model
         net = model(**params)
     # elif model == "GoodCorresNet_layers_deepF_SP":
     #     from models.DeepFNet_SP import Norm8PointNet_SP

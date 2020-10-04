@@ -51,42 +51,48 @@ def mean_list(list):
     return sum(list) / len(list)
 
 ## functions for inference
-def mat_E_to_pose(E_ests_layers):
+def mat_E_to_pose(E_ests_layers, idx=-1):
     """ convert from essential matrix to R,t
     params:
-        E_ests_layers -> [B, 3, 3]: batch essential matrices
+        E_ests_layers -> [D, B, 3, 3]: batch essential matrices
+    return:
+        Poses -> [B, 4, 3, 4]: batch of poses
     """
     ## many layers of essential matrices
-    for layer_idx, E_ests in enumerate(E_ests_layers):
-        R_angle_error_list = []
-        t_angle_error_list = []
-        t_l2_error_list = []
-        q_l2_error_list = []
+    # for layer_idx, E_ests in enumerate(E_ests_layers):
+    try:
+        E_est = E_ests_layers[idx]
+    except:
+        logging.ERROR(f"idx: {idx} out of range")
+        E_est = E_ests_layers[-1]
 
-        # ================= method 1/2 ===============
-        ## convert E mat to R, t
-        R12s_list = []
-        t12s_list = []
-        for idx, E_cam in enumerate(E_ests.cpu().transpose(1, 2)):
-            # FU, FD, FV= torch.svd(E_cam, some=True)
-            # # print('[info.Debug @_E_from_XY] Singular values for recovered E(F):\n', FD.detach().numpy())
-            # S_110 = torch.diag(torch.tensor([1., 1., 0.], dtype=FU.dtype, device=FU.device))
-            # E_cam = torch.mm(FU, torch.mm(S_110, FV.t()))
+    # E_ests -> [B, 3, 3]
 
-            R12s, t12s, M12s = utils_F._get_M2s(E_cam)
-            R12s_list.append(R12s)
-            t12s_list.append(t12s)
-        R12s_batch_cam = [
-            torch.stack([R12s[0] for R12s in R12s_list]).to(device),
-            torch.stack([R12s[1] for R12s in R12s_list]).to(device),
-        ]
-        t12s_batch_cam = [
-            torch.stack([t12s[0] for t12s in t12s_list]).to(device),
-            torch.stack([t12s[1] for t12s in t12s_list]).to(device),
-        ]  # already unit norm
+    # ================= method 1/2 ===============
+    ## convert E mat to R, t
+    R12s_list = []
+    t12s_list = []
+    for idx, E_cam in enumerate(E_ests.cpu().transpose(1, 2)):
+        # E_cam -> [3, 3]
+        # FU, FD, FV= torch.svd(E_cam, some=True)
+        # # print('[info.Debug @_E_from_XY] Singular values for recovered E(F):\n', FD.detach().numpy())
+        # S_110 = torch.diag(torch.tensor([1., 1., 0.], dtype=FU.dtype, device=FU.device))
+        # E_cam = torch.mm(FU, torch.mm(S_110, FV.t()))
 
-    ## aggregate   
-    return 0 
+        R12s, t12s, M12s = utils_F._get_M2s(E_cam)
+        R12s_list.append(R12s)
+        t12s_list.append(t12s)
+
+    R12s_batch_cam = [ # [[B,3,3], [B,3,3] ]
+        torch.stack([R12s[0] for R12s in R12s_list]).to(device),
+        torch.stack([R12s[1] for R12s in R12s_list]).to(device),
+    ]
+    t12s_batch_cam = [ # [[B,3,1], [B,3,1] ]
+        torch.stack([t12s[0] for t12s in t12s_list]).to(device),
+        torch.stack([t12s[1] for t12s in t12s_list]).to(device),
+    ]  # already unit norm
+
+    return (R12s_batch_cam, t12s_batch_cam)
 
 ##### loss functions #####
 
@@ -562,20 +568,27 @@ def get_all_loss_DeepF(
 
 ##### end loss functions #####
 
-def get_E_ests(x1, x2, Ks, logits_weights, if_normzliedK=True):
-    # E_ests_list = []
-    # for x1_single, x2_single, K, w in zip(x1, x2, Ks, logits_weights):
-    #     E_est = utils_F._E_from_XY(x1_single, x2_single, K, torch.diag(w), if_normzliedK=if_normzliedK)
-    #     E_ests_list.append(E_est)
-    # E_ests = torch.stack(E_ests_list)
-    E_ests = utils_F._E_from_XY_batch(
-        x1,
-        x2,
-        Ks,
-        torch.diag_embed(logits_weights, dim1=-2, dim2=-1),
-        if_normzliedK=if_normzliedK,
+def get_E_ests_deepF(outs):
+    """ convert output fundamental matrix into essential matrix
+
+    """
+    E_ests_layers = []
+    logits_softmax = outs["weights"]
+    F_est_normalized, T1, T2, out_layers, residual_layers, weights_layers = (
+        outs["F_est"],
+        outs["T1"],
+        outs["T2"],
+        outs["out_layers"],
+        outs["residual_layers"],
+        outs["weights_layers"],
     )
-    return E_ests
+    # for iter in range(loss_params["depth"]):
+    for iter in range(out_layers.shape[0]): # iterate all layers
+        E_ests_layers.append(
+            Ks.transpose(1, 2) @ T2.permute(0, 2, 1) @ out_layers[iter] @ T1 @ Ks
+        )
+
+    return E_ests_layers
 
 
 
@@ -589,6 +602,38 @@ def get_unique(xs, topk, matches_good_unique_nums):  # [B, N]
     return torch.stack(xs_topk_list)
 
 ##### validation #####
+def mat_E_to_pose_np():
+    """ from essential matrix, get Rt
+    params:
+        K_np:
+        x1_single_np: matching point x1
+        x2_single_np: matching point x2
+        E_est_np, E_gt_np: essential matrix
+        F_est_np, F_gt_np: fundamental matrix
+        five_point: with five_point or not (default not)
+        if_opencv: compare to the results using opencv
+    return:
+        (pose error), (epipolar distance), (reconstructed poses)
+    """
+    error_Rt_estW = None
+    epi_dist_mean_estW = None
+    error_Rt_opencv = None
+    epi_dist_mean_opencv = None
+
+    # Evaluating with our weights
+    M_estW, error_Rt_estW = utils_F.goodCorr_eval_nondecompose(
+        x1_single_np,
+        x2_single_np,
+        E_est_np.astype(np.float64),
+        delta_Rtij_inv,
+        K_np,
+        None,
+    )
+    epi_dist_mean_estW, _, _ = utils_F.epi_distance_np(
+        F_est_np, x1_single_np, x2_single_np, if_homo=False
+    )    
+    return (M_estW, epi_dist_mean_estW)
+
 def val_rt(
     idx,
     K_np,

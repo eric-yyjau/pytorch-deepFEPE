@@ -47,7 +47,6 @@ from deepFEPE.utils.loader import (
     pretrainedLoader_opt,
 )
 from deepFEPE.train_good_utils import (
-    get_all_loss,
     val_rt,
     get_all_loss_DeepF,
     write_metrics_summary,
