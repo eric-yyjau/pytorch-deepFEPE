@@ -450,7 +450,7 @@ class DeepFNet(nn.Module):
         # matches_good_unique_num = None
 
         # if self.if_tri_depth:
-        t_scene_scale = data_batch['t_scene_scale']
+        # t_scene_scale = data_batch['t_scene_scale']
 
         out_layers = []
         epi_res_layers = []

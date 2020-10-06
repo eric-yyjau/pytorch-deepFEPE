@@ -51,7 +51,7 @@ def mean_list(list):
     return sum(list) / len(list)
 
 ## functions for inference
-def mat_E_to_pose(E_ests_layers, idx=-1):
+def mat_E_to_pose(E_ests_layers, idx=-1, device='cpu'):
     """ convert from essential matrix to R,t
     params:
         E_ests_layers -> [D, B, 3, 3]: batch essential matrices
@@ -61,10 +61,10 @@ def mat_E_to_pose(E_ests_layers, idx=-1):
     ## many layers of essential matrices
     # for layer_idx, E_ests in enumerate(E_ests_layers):
     try:
-        E_est = E_ests_layers[idx]
+        E_ests = E_ests_layers[idx]
     except:
         logging.ERROR(f"idx: {idx} out of range")
-        E_est = E_ests_layers[-1]
+        E_ests = E_ests_layers[-1]
 
     # E_ests -> [B, 3, 3]
 
@@ -568,7 +568,7 @@ def get_all_loss_DeepF(
 
 ##### end loss functions #####
 
-def get_E_ests_deepF(outs):
+def get_E_ests_deepF(outs, Ks, K_invs):
     """ convert output fundamental matrix into essential matrix
 
     """
@@ -583,7 +583,7 @@ def get_E_ests_deepF(outs):
         outs["weights_layers"],
     )
     # for iter in range(loss_params["depth"]):
-    for iter in range(out_layers.shape[0]): # iterate all layers
+    for iter in range(len(out_layers)): # iterate all layers
         E_ests_layers.append(
             Ks.transpose(1, 2) @ T2.permute(0, 2, 1) @ out_layers[iter] @ T1 @ Ks
         )
