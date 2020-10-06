@@ -518,7 +518,8 @@ def _get_M2s_batch(Es_batch):
     # M2s = [torch.cat((x, y), 1) for x, y in [(x,y) for x in R2s for y in t2s]]
     return R2s_batch, t2s_batch
 
-def _E_to_M(E_est_th, K, x1, x2, inlier_mask=None, delta_Rt_gt=None, depth_thres=50., show_debug=False, show_result=True, method_name='ours'):
+def _E_to_M(E_est_th, K, x1, x2, inlier_mask=None, delta_Rt_gt=None, 
+            depth_thres=50., show_debug=False, show_result=True, method_name='ours'):
     if show_debug:
         print('--- Recovering pose from E...')
     count_N = x1.shape[0]
@@ -570,6 +571,10 @@ def _E_to_M(E_est_th, K, x1, x2, inlier_mask=None, delta_Rt_gt=None, depth_thres
     if show_debug:
         print([np.sum(mask) for mask in cheirality_checks])
     good_M_index, non_zero_nums = max(enumerate([np.sum(mask) for mask in cheirality_checks]), key=operator.itemgetter(1))
+    
+    # return values
+    error_Rt = []
+    Rt_cam = []
     if non_zero_nums > 0:
         # Rt_idx = cheirality_checks.index(True)
         M_inv = utils_misc.Rt_depad(np.linalg.inv(utils_misc.Rt_pad(M2s[good_M_index].numpy())))
@@ -594,8 +599,7 @@ def _E_to_M(E_est_th, K, x1, x2, inlier_mask=None, delta_Rt_gt=None, depth_thres
     else:
         # raise ValueError('ERROR! 0 of qualified [R|t] found!')
         print('ERROR! 0 of qualified [R|t] found!')
-        error_Rt = []
-        Rt_cam = []
+        
 
         # # Get rid of small angle points. @Manmo: you should discard points that are beyond a depth threshold (say, more than 100m), or which subtend a small angle between the two cameras (say, less than 5 degrees).
         # v1s = (X_tri-C1).T
@@ -677,6 +681,16 @@ def _E_to_M(E_est_th, K, x1, x2, inlier_mask=None, delta_Rt_gt=None, depth_thres
     return M2_list, error_Rt, Rt_cam
 
 def _E_to_M_train(E_est_th, K, x1, x2, inlier_mask=None, delta_Rt_gt_cam=None, depth_thres=50., show_debug=False, show_result=True, method_name='ours'):
+    """ convert essential matrix to pose (done Cheirality check)
+    params:
+        E_est_th -> torch [3, 3]: essential matrix
+        K -> np [3, 3]: intrinsic matirx
+        x1, x2 -> np [N, 2]: matches
+    return:
+        M2_list, 
+        error_Rt, 
+        Rt_cam -> torch [3, 4]: 
+    """
     if show_debug:
         print('--- Recovering pose from E...')
     count_N = x1.shape[0]
