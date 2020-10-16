@@ -13,7 +13,7 @@ Authors:
 import argparse
 import yaml
 import os, sys
-from path import Path
+from pathlib import Path
 import copy
 import numpy as np
 import cv2
