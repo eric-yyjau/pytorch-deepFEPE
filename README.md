@@ -263,12 +263,15 @@ tensorboard --logdir=runs/train_good
 Please cite the following papers.
 - DeepFEPE
 ```
-@misc{2020_jau_zhu_deepFEPE,
-Author = {You-Yi Jau and Rui Zhu and Hao Su and Manmohan Chandraker},
-Title = {Deep Keypoint-Based Camera Pose Estimation with Geometric Constraints},
-Year = {2020},
-Eprint = {arXiv:2007.15122},
-}
+@INPROCEEDINGS{2020_jau_zhu_deepFEPE,
+  author={Y. -Y. {Jau} and R. {Zhu} and H. {Su} and M. {Chandraker}},
+  booktitle={2020 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)}, 
+  title={Deep Keypoint-Based Camera Pose Estimation with Geometric Constraints}, 
+  year={2020},
+  volume={},
+  number={},
+  pages={4950-4957},
+  doi={10.1109/IROS45743.2020.9341229}}
 ```
 - SuperPoint
 ```
