@@ -133,7 +133,7 @@ python deepFEPE/train_good.py eval_good deepFEPE/configs/apollo_train_corr_basel
 You can use our pretrained models for testing. Just put the paths in the `config` file.
 
 ### Our **pretrained models**:
-- Download through `git-lfs` or [Google drive](https://drive.google.com/drive/folders/18WHK8V7orm7-Pqd4KouPSM-da2CD8xN4?usp=sharing)
+- Download through `git-lfs` or [Google drive](https://drive.google.com/drive/folders/1MaNo6Td3eAlhn7LXlCBREg522zBrMWLE?usp=sharing)
 ```
 git lfs ls-files # check the files
 git lfs fetch 
